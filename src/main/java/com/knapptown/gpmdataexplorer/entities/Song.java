@@ -1,10 +1,8 @@
 package com.knapptown.gpmdataexplorer.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,17 +11,23 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Setter @Getter @NoArgsConstructor
+@Getter @Setter @Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Song implements Serializable {
 
     private static final long serialVersionUID = -4082590851179640267L;
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private @Size(min = 1, max = 50) String title;
     private @Size(min = 1, max = 50) String album;
@@ -35,6 +39,6 @@ public class Song implements Serializable {
     private int playlistIndex;
 
     @ManyToMany(mappedBy = "songs")
-    private Set<Playlist> playlists = new HashSet<>();
+    private Set<Playlist> playlists;
 
 }
