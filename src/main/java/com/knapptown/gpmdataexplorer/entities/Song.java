@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,7 @@ public class Song implements Serializable {
     private int playlistIndex;
 
     @ManyToMany(mappedBy = "songs")
+    @JsonIgnoreProperties("songs")
     private Set<Playlist> playlists;
 
 }
