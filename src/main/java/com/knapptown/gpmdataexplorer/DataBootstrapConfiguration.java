@@ -53,26 +53,26 @@ public class DataBootstrapConfiguration {
     }
 
     private Song createSong() {
-        Song song = new Song();
-        song.setAlbum("Enema of the State");
-        song.setArtist("Blink 182");
-        song.setTitle("All the Small Things");
-        song.setDurationMs(40000);
-        song.setPlayCount(400);
-        song.setPlaylistIndex(1);
-        song.setRating(5);
-        song.setRemoved(false);
-        return song;
+        return Song.builder()
+                .album("Enema of the State")
+                .artist("Blink 182")
+                .title("All the Small Things")
+                .durationMs(40000)
+                .playCount(400)
+                .playlistIndex(1)
+                .rating(5)
+                .removed(false)
+                .build();
     }
 
     private Playlist createPlaylist() {
-        Playlist playlist = new Playlist();
-        playlist.setOwner("Evan Knapp");
-        playlist.setTitle("Punk Rock");
-        playlist.setDeleted(false);
-        playlist.setDescriptions("Punk Rock Playlist!");
-        playlist.setShared(false);
-        return playlist;
+        return Playlist.builder()
+                .owner("Evan Knapp")
+                .title("Punk Rock")
+                .deleted(false)
+                .descriptions("Punk Rock Playlist!")
+                .shared(false)
+                .build();
     }
     
 }
