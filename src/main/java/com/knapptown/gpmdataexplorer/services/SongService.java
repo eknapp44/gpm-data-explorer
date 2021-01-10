@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.knapptown.gpmdataexplorer.entities.Song;
+import com.knapptown.gpmdataexplorer.exceptions.SongNotFoundException;
 import com.knapptown.gpmdataexplorer.repositories.SongRepository;
 
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class SongService {
 
     @Transactional
     public Song getSong(Long id) {
-        return songRepository.getOne(id);
+        return songRepository.findById(id).orElseThrow(() -> new SongNotFoundException(id));
     }
 
     @Transactional

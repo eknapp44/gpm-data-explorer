@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.knapptown.gpmdataexplorer.entities.Playlist;
+import com.knapptown.gpmdataexplorer.exceptions.PlaylistNotFoundException;
 import com.knapptown.gpmdataexplorer.repositories.PlaylistRepository;
 
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class PlaylistService {
 
     @Transactional
     public Playlist getPlaylist(Long id) {
-        return playlistRepository.getOne(id);
+        return playlistRepository.findById(id).orElseThrow(() -> new PlaylistNotFoundException(id));
     }
 
     @Transactional
