@@ -2,6 +2,9 @@ package com.knapptown.gpmdataexplorer;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.knapptown.gpmdataexplorer.entities.Playlist;
 import com.knapptown.gpmdataexplorer.entities.Song;
 import com.knapptown.gpmdataexplorer.services.PlaylistService;
@@ -17,6 +20,16 @@ import org.springframework.context.annotation.Configuration;
 public class DataBootstrapConfiguration {
 
     private static final Logger log = LoggerFactory.getLogger(DataBootstrapConfiguration.class);
+
+    @Bean
+    public CsvMapper csvMapper() {
+        return (CsvMapper) new CsvMapper().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    }
+
+    @Bean
+    public CsvSchema csvSchema() {
+        return CsvSchema.emptySchema().withHeader();
+    }
 
     @Bean
     public CommandLineRunner bootstrapData(PlaylistService playlistService,
