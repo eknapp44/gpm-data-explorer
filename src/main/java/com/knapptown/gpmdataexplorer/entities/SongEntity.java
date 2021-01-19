@@ -19,20 +19,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "song")
 @Getter @Setter @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Song implements Serializable {
+public class SongEntity implements Serializable {
 
     private static final long serialVersionUID = -4082590851179640267L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private @Size(min = 1, max = 50) String title;
-    private @Size(min = 1, max = 50) String album;
-    private @Size(min = 1, max = 50) String artist;
+    private @Size(min = 1, max = 150) String title;
+    private @Size(max = 150) String album;
+    private @Size(max = 200) String artist;
     private int durationMs;
     private @Max(value = 5) Integer rating;
     private int playCount;
@@ -41,6 +41,6 @@ public class Song implements Serializable {
 
     @ManyToMany(mappedBy = "songs")
     @JsonIgnoreProperties("songs")
-    private Set<Playlist> playlists;
+    private Set<PlaylistEntity> playlists;
 
 }

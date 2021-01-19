@@ -2,6 +2,7 @@ package com.knapptown.gpmdataexplorer.components;
 
 import com.knapptown.gpmdataexplorer.exceptions.DataProcessingException;
 import com.knapptown.gpmdataexplorer.models.Playlist;
+import com.knapptown.gpmdataexplorer.services.PlaylistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,11 +23,14 @@ public class PlaylistProcessor {
 
     private final DataCsvReader dataCsvReader;
     private final SongProcessor songProcessor;
+    private final PlaylistService playlistService;
 
     public PlaylistProcessor(DataCsvReader dataCsvReader,
-                             SongProcessor songProcessor) {
+                             SongProcessor songProcessor,
+                             PlaylistService playlistService) {
         this.dataCsvReader = dataCsvReader;
         this.songProcessor = songProcessor;
+        this.playlistService = playlistService;
     }
 
     public void processPlaylistDirectory(Path playlistDirectoryPath) {
@@ -52,6 +56,7 @@ public class PlaylistProcessor {
         } catch (IOException e) {
             throw new DataProcessingException("Error processing Playlist Directory: " + playlistDirectoryPath, e);
         }
+        logger.info("Processed playlist directory: " + playlistDirectoryPath);
     }
 
     private void processPlaylistMetadataFile(Path metadataFile) throws IOException {
@@ -62,6 +67,7 @@ public class PlaylistProcessor {
             throw new IllegalArgumentException("Invalid playlist metadata file: " + metadataFile);
         }
 
+        playlistService.savePlaylist(playlist);
         logger.info("Processed metadata file for playlist: " + playlist.getTitle());
     }
 

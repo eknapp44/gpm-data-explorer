@@ -53,6 +53,7 @@ public class DataDirectoryProcessor implements ApplicationListener<ApplicationRe
         } catch (IOException e) {
             throw new DataProcessingException("Error processing Data Directory: " + dataDirectory, e);
         }
+        logger.info("Processed data directory: " + dataDirectory);
     }
 
     private void checkValidDataDirectory(Path dataDirectoryPath) {
