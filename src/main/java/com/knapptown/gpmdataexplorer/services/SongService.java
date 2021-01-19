@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.knapptown.gpmdataexplorer.entities.Song;
+import com.knapptown.gpmdataexplorer.entities.SongEntity;
 import com.knapptown.gpmdataexplorer.exceptions.SongNotFoundException;
+import com.knapptown.gpmdataexplorer.mappers.SongMapper;
+import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.repositories.SongRepository;
 
 import org.springframework.stereotype.Service;
@@ -14,24 +16,29 @@ import org.springframework.stereotype.Service;
 public class SongService {
 
     private final SongRepository songRepository;
+    private final SongMapper songMapper;
 
-    public SongService(SongRepository songRepository) {
+    public SongService(SongRepository songRepository,
+                       SongMapper songMapper) {
         this.songRepository = songRepository;
+        this.songMapper = songMapper;
     }
 
     @Transactional
     public List<Song> getAllSongs() {
-        return songRepository.findAll();
+        return songMapper.mapSongEntitiesToSongs(songRepository.findAll());
     }
 
     @Transactional
     public Song getSong(Long id) {
-        return songRepository.findById(id).orElseThrow(() -> new SongNotFoundException(id));
+        SongEntity songEntity = songRepository.findById(id).orElseThrow(() -> new SongNotFoundException(id));
+        return songMapper.mapSongEntityToSong(songEntity);
     }
 
     @Transactional
     public Song saveSong(Song song) {
-        return songRepository.save(song);
+        SongEntity songEntity = songMapper.mapSongToSongEntity(song);
+        return songMapper.mapSongEntityToSong(songRepository.save(songEntity));
     }
     
 }

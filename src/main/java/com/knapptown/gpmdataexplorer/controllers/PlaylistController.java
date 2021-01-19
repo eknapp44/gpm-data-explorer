@@ -1,11 +1,13 @@
 package com.knapptown.gpmdataexplorer.controllers;
 
-import com.knapptown.gpmdataexplorer.entities.Playlist;
+import com.knapptown.gpmdataexplorer.exceptions.PlaylistNotFoundException;
+import com.knapptown.gpmdataexplorer.models.Playlist;
 import com.knapptown.gpmdataexplorer.services.PlaylistService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,22 +34,24 @@ public class PlaylistController {
     }
 
     @PostMapping
-    public Playlist createPlaylist(Playlist playlist) {
+    public Playlist createPlaylist(@RequestBody Playlist playlist) {
         return playlistService.savePlaylist(playlist);
     }
 
     @PutMapping("/{id}")
-    public Playlist updatePlaylist(Long id, Playlist playlist) {
+    public Playlist updatePlaylist(@PathVariable Long id, @RequestBody Playlist playlist) {
         Playlist original = playlistService.getPlaylist(id);
-        if (original != null) {
-            original.setTitle(playlist.getTitle());
-            original.setShared(playlist.isShared());
-            original.setDeleted(playlist.isDeleted());
-            original.setDescriptions(playlist.getDescriptions());
 
-            return playlistService.savePlaylist(original);
+        if (original == null) {
+            throw new PlaylistNotFoundException(id);
         }
-        return null;
+
+        original.setTitle(playlist.getTitle());
+        original.setShared(playlist.isShared());
+        original.setDeleted(playlist.isDeleted());
+        original.setDescription(playlist.getDescription());
+
+        return playlistService.savePlaylist(original);
     }
 
 }

@@ -1,11 +1,13 @@
 package com.knapptown.gpmdataexplorer.controllers;
 
-import com.knapptown.gpmdataexplorer.entities.Song;
+import com.knapptown.gpmdataexplorer.exceptions.SongNotFoundException;
+import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.services.SongService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,25 +34,27 @@ public class SongController {
     }
 
     @PostMapping
-    public Song createSong(Song song) {
+    public Song createSong(@RequestBody Song song) {
         return songService.saveSong(song);
     }
 
     @PutMapping("/{id}")
-    public Song updateSong(Long id, Song song) {
+    public Song updateSong(@PathVariable Long id, @RequestBody Song song) {
         Song original = songService.getSong(id);
-        if (original != null) {
-            original.setTitle(song.getTitle());
-            original.setAlbum(song.getAlbum());
-            original.setArtist(song.getArtist());
-            original.setDurationMs(song.getDurationMs());
-            original.setPlayCount(song.getPlayCount());
-            original.setRating(song.getRating());
-            original.setRemoved(song.isRemoved());
-            original.setPlaylistIndex(song.getPlaylistIndex());
-            return songService.saveSong(original);
+
+        if (original == null) {
+            throw new SongNotFoundException(id);
         }
-        return null;
+
+        original.setTitle(song.getTitle());
+        original.setAlbum(song.getAlbum());
+        original.setArtist(song.getArtist());
+        original.setDurationMs(song.getDurationMs());
+        original.setPlayCount(song.getPlayCount());
+        original.setRating(song.getRating());
+        original.setRemoved(song.isRemoved());
+        original.setPlaylistIndex(song.getPlaylistIndex());
+        return songService.saveSong(original);
     }
 
 }

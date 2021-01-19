@@ -22,11 +22,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "playlist")
 @Getter @Setter @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Playlist implements Serializable {
+public class PlaylistEntity implements Serializable {
 
     private static final long serialVersionUID = -4038496640526641680L;
 
@@ -46,6 +46,6 @@ public class Playlist implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "song_id")
     )
     @JsonIgnoreProperties("playlists")
-    private Set<Song> songs;
+    private Set<SongEntity> songs;
 
 }
