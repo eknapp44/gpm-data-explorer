@@ -1,7 +1,7 @@
 package com.knapptown.gpmdataexplorer.entities;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,6 +22,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * A Playlist entity. This is a representation of a playlist object that contains
+ * a list of songs.
+ */
 @Entity(name = "playlist")
 @Getter @Setter @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,6 +50,22 @@ public class PlaylistEntity implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "song_id")
     )
     @JsonIgnoreProperties("playlists")
-    private Set<SongEntity> songs;
+    private List<SongEntity> songs;
+
+    /**
+     * Add a Song Entity instance to the Playlist's list of songs.
+     * @param songEntity A Song Entity instance.
+     */
+    public void addSong(SongEntity songEntity) {
+        this.songs.add(songEntity);
+    }
+
+    /**
+     * Add a list of Song Entity instances to the Playlist's list of songs.
+     * @param songEntities A List of Song Entity instances.
+     */
+    public void addSongs(List<SongEntity> songEntities) {
+        this.songs.addAll(songEntities);
+    }
 
 }
