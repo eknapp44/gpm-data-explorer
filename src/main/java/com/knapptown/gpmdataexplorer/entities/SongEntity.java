@@ -1,7 +1,7 @@
 package com.knapptown.gpmdataexplorer.entities;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,6 +41,6 @@ public class SongEntity implements Serializable {
 
     @ManyToMany(mappedBy = "songs")
     @JsonIgnoreProperties("songs")
-    private Set<PlaylistEntity> playlists;
+    private List<PlaylistEntity> playlists;
 
 }

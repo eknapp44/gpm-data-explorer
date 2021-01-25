@@ -16,6 +16,7 @@ public class PlaylistMapper {
 
     public PlaylistEntity mapPlaylistToPlaylistEntity(Playlist playlist) {
         return PlaylistEntity.builder()
+                .id(playlist.getId())
                 .title(playlist.getTitle())
                 .owner(playlist.getOwner())
                 .descriptions(playlist.getDescription())
@@ -30,6 +31,7 @@ public class PlaylistMapper {
 
     public Playlist mapPlaylistEntityToPlaylist(PlaylistEntity playlistEntity) {
         Playlist playlist = new Playlist();
+        playlist.setId(playlistEntity.getId());
         playlist.setTitle(playlistEntity.getTitle());
         playlist.setOwner(playlistEntity.getOwner());
         playlist.setDescription(playlistEntity.getDescriptions());

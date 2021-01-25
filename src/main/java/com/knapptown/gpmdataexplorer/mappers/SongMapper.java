@@ -16,6 +16,7 @@ public class SongMapper {
 
     public SongEntity mapSongToSongEntity(Song song) {
         return SongEntity.builder()
+                .id(song.getId())
                 .title(song.getTitle())
                 .album(song.getAlbum())
                 .artist(song.getArtist())
@@ -33,6 +34,7 @@ public class SongMapper {
 
     public Song mapSongEntityToSong(SongEntity songEntity) {
         Song song = new Song();
+        song.setId(songEntity.getId());
         song.setTitle(songEntity.getTitle());
         song.setArtist(songEntity.getArtist());
         song.setAlbum(songEntity.getAlbum());
