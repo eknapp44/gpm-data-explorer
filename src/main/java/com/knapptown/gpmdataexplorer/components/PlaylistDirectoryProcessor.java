@@ -23,7 +23,7 @@ public class PlaylistDirectoryProcessor extends DirectoryProcessor<Playlist> {
     private static final Logger logger = LoggerFactory.getLogger(PlaylistDirectoryProcessor.class);
 
     private final TracksDirectoryProcessor tracksDirectoryProcessor;
-    private final PlaylistProcessorData playlistMetadataProcessor;
+    private final PlaylistDataProcessor playlistMetadataProcessor;
     private final PlaylistService playlistService;
 
     /**
@@ -34,7 +34,7 @@ public class PlaylistDirectoryProcessor extends DirectoryProcessor<Playlist> {
      * @param playlistService A playlist service instance.
      */
     public PlaylistDirectoryProcessor(TracksDirectoryProcessor tracksDirectoryProcessor,
-                                      PlaylistProcessorData playlistMetadataProcessor,
+                                      PlaylistDataProcessor playlistMetadataProcessor,
                                       PlaylistService playlistService) {
         this.tracksDirectoryProcessor = tracksDirectoryProcessor;
         this.playlistMetadataProcessor = playlistMetadataProcessor;

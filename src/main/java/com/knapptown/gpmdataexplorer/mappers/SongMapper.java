@@ -33,17 +33,17 @@ public class SongMapper {
     }
 
     public Song mapSongEntityToSong(SongEntity songEntity) {
-        Song song = new Song();
-        song.setId(songEntity.getId());
-        song.setTitle(songEntity.getTitle());
-        song.setArtist(songEntity.getArtist());
-        song.setAlbum(songEntity.getAlbum());
-        song.setDurationMs(songEntity.getDurationMs());
-        song.setPlayCount(songEntity.getPlayCount());
-        song.setPlaylistIndex(songEntity.getPlaylistIndex());
-        song.setRating(songEntity.getRating());
-        song.setRemoved(songEntity.isRemoved());
-        return song;
+        return Song.builder()
+                .id(songEntity.getId())
+                .title(songEntity.getTitle())
+                .artist(songEntity.getArtist())
+                .album(songEntity.getAlbum())
+                .durationMs(songEntity.getDurationMs())
+                .playCount(songEntity.getPlayCount())
+                .playlistIndex(songEntity.getPlaylistIndex())
+                .removed(songEntity.isRemoved())
+                .rating(songEntity.getRating())
+                .build();
     }
 
 }

@@ -30,14 +30,14 @@ public class PlaylistMapper {
     }
 
     public Playlist mapPlaylistEntityToPlaylist(PlaylistEntity playlistEntity) {
-        Playlist playlist = new Playlist();
-        playlist.setId(playlistEntity.getId());
-        playlist.setTitle(playlistEntity.getTitle());
-        playlist.setOwner(playlistEntity.getOwner());
-        playlist.setDescription(playlistEntity.getDescriptions());
-        playlist.setDeleted(playlistEntity.isDeleted());
-        playlist.setShared(playlistEntity.isShared());
-        return playlist;
+        return Playlist.builder()
+                .id(playlistEntity.getId())
+                .title(playlistEntity.getTitle())
+                .description(playlistEntity.getDescriptions())
+                .owner(playlistEntity.getOwner())
+                .shared(playlistEntity.isShared())
+                .deleted(playlistEntity.isDeleted())
+                .build();
     }
 
 }

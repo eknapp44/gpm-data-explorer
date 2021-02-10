@@ -25,13 +25,13 @@ public class TracksDirectoryProcessor extends DirectoryProcessor<List<Song>> {
 
     private static final Logger logger = LoggerFactory.getLogger(TracksDirectoryProcessor.class);
 
-    private final SongProcessorData songProcessor;
+    private final SongDataProcessor songProcessor;
 
     /**
      * Create a Tracks Directory processor using a Song Metadata Processor instance.
      * @param songProcessor A song metadata processor instance.
      */
-    public TracksDirectoryProcessor(SongProcessorData songProcessor) {
+    public TracksDirectoryProcessor(SongDataProcessor songProcessor) {
         this.songProcessor = songProcessor;
     }
 
