@@ -14,20 +14,23 @@ import java.nio.file.Path;
  * Process a Song's metadata CSV file.
  */
 @Component
-public class SongProcessorData extends DataCsvProcessor<Song> {
+public class SongDataProcessor extends DataCsvProcessor<Song> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SongProcessorData.class);
+    private static final Logger logger = LoggerFactory.getLogger(SongDataProcessor.class);
 
     private final SongService songService;
+    private final DataStringDecoder dataStringDecoder;
 
     /**
      * Create a Song Metadata Processor given a Data CSV Reader.
      * @param dataCsvReader A data CSV Reader instance.
      * @param songService A Song Service Instance..
      */
-    public SongProcessorData(DataCsvReader dataCsvReader,
+    public SongDataProcessor(DataCsvReader dataCsvReader,
+                             DataStringDecoder dataStringDecoder,
                              SongService songService) {
         super(dataCsvReader);
+        this.dataStringDecoder = dataStringDecoder;
         this.songService = songService;
     }
 
@@ -55,9 +58,30 @@ public class SongProcessorData extends DataCsvProcessor<Song> {
             return null;
         }
 
+        song = decodeData(song);
         song = songService.saveSong(song);
+
         logger.info("Processed song metadata file: " + song.getTitle() + " by: " + song.getArtist());
         return song;
+    }
+
+    /**
+     * Decode values of an input song instance and return a decoded song instance.
+     * @param song An encoded song instance.
+     * @return A decoded song instance.
+     */
+    private Song decodeData(Song song) {
+        return Song.builder()
+                .id(song.getId())
+                .title(dataStringDecoder.decodeDataString(song.getTitle()))
+                .artist(dataStringDecoder.decodeDataString(song.getArtist()))
+                .album(dataStringDecoder.decodeDataString(song.getAlbum()))
+                .durationMs(song.getDurationMs())
+                .playCount(song.getPlayCount())
+                .playlistIndex(song.getPlaylistIndex())
+                .rating(song.getRating())
+                .removed(song.isRemoved())
+                .build();
     }
 
 }

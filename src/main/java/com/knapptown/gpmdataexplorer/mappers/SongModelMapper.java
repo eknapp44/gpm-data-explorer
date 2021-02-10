@@ -8,15 +8,15 @@ import org.springframework.stereotype.Component;
 public class SongModelMapper {
 
     public Song mapSongCsvObjectToSong(SongCsvObject songCsvObject) {
-        Song song = new Song();
-        song.setTitle(songCsvObject.getTitle());
-        song.setArtist(songCsvObject.getArtist());
-        song.setAlbum(songCsvObject.getAlbum());
-        song.setDurationMs(Integer.parseInt(songCsvObject.getDurationMs()));
-        song.setPlayCount(Integer.parseInt(songCsvObject.getPlayCount()));
-        song.setRating(Integer.parseInt(songCsvObject.getRating()));
-        song.setRemoved(Boolean.parseBoolean(songCsvObject.getRemoved()));
-        song.setPlaylistIndex(Integer.parseInt(songCsvObject.getPlaylistIndex()));
-        return song;
+       return Song.builder()
+               .title(songCsvObject.getTitle())
+               .artist(songCsvObject.getArtist())
+               .album(songCsvObject.getAlbum())
+               .durationMs(Integer.parseInt(songCsvObject.getDurationMs()))
+               .playCount(Integer.parseInt(songCsvObject.getPlayCount()))
+               .rating(Integer.parseInt(songCsvObject.getRating()))
+               .removed(Boolean.parseBoolean(songCsvObject.getRemoved()))
+               .playlistIndex(Integer.parseInt(songCsvObject.getPlaylistIndex()))
+               .build();
     }
 }

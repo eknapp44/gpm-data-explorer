@@ -14,11 +14,12 @@ import java.nio.file.Path;
  * Data Processor for Playlist Metadata CSV Files.
  */
 @Component
-public class PlaylistProcessorData extends DataCsvProcessor<Playlist> {
+public class PlaylistDataProcessor extends DataCsvProcessor<Playlist> {
 
-    private static final Logger logger = LoggerFactory.getLogger(PlaylistProcessorData.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlaylistDataProcessor.class);
 
     private final PlaylistService playlistService;
+    private final DataStringDecoder dataStringDecoder;
 
     /**
      * Create a Playlist Metadata CSV  Processor using a Data CSV Reader instance and
@@ -26,9 +27,11 @@ public class PlaylistProcessorData extends DataCsvProcessor<Playlist> {
      * @param dataCsvReader A data CSV reader instance.
      * @param playlistService A playlist service instance.
      */
-    public PlaylistProcessorData(DataCsvReader dataCsvReader,
+    public PlaylistDataProcessor(DataCsvReader dataCsvReader,
+                                 DataStringDecoder dataStringDecoder,
                                  PlaylistService playlistService) {
         super(dataCsvReader);
+        this.dataStringDecoder = dataStringDecoder;
         this.playlistService = playlistService;
     }
 
@@ -51,9 +54,28 @@ public class PlaylistProcessorData extends DataCsvProcessor<Playlist> {
             throw new IllegalArgumentException("Invalid playlist metadata file: " + path);
         }
 
+        playlist = decodeData(playlist);
         playlist = playlistService.savePlaylist(playlist);
 
         logger.info("Processed metadata file for playlist: " + playlist.getTitle());
         return  playlist;
     }
+
+    /**
+     * Decode any data strings in the input playlist and use as
+     * an output playlist.
+     * @param playlist A playlist instance to be decoded.
+     * @return A decoded playlist instance.
+     */
+    private Playlist decodeData(Playlist playlist) {
+        return Playlist.builder()
+                .id(playlist.getId())
+                .title(dataStringDecoder.decodeDataString(playlist.getTitle()))
+                .description(dataStringDecoder.decodeDataString(playlist.getDescription()))
+                .owner(dataStringDecoder.decodeDataString(playlist.getOwner()))
+                .deleted(playlist.isDeleted())
+                .shared(playlist.isShared())
+                .build();
+    }
+
 }
