@@ -39,7 +39,7 @@ public class PlaylistEntity implements Serializable {
     private Long id;
     private @Size(min = 1, max = 50) String title;
     private @Size(min = 1, max = 25) String owner;
-    private @Size(max = 100) String descriptions;
+    private @Size(max = 100) String description;
     private boolean shared;
     private boolean deleted;
 

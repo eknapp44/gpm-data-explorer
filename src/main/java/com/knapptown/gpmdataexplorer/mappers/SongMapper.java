@@ -2,48 +2,30 @@ package com.knapptown.gpmdataexplorer.mappers;
 
 import com.knapptown.gpmdataexplorer.entities.SongEntity;
 import com.knapptown.gpmdataexplorer.models.Song;
-import org.springframework.stereotype.Component;
+import com.knapptown.gpmdataexplorer.models.SongCsvObject;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-public class SongMapper {
+@Mapper(componentModel = "spring")
+public interface SongMapper {
 
-    public List<SongEntity>  mapSongsToSongEntities(List<Song> songs) {
-        return songs.stream().map(this::mapSongToSongEntity).collect(Collectors.toList());
-    }
+    List<SongEntity> mapSongsToSongEntities(List<Song> songs);
 
-    public SongEntity mapSongToSongEntity(Song song) {
-        return SongEntity.builder()
-                .id(song.getId())
-                .title(song.getTitle())
-                .album(song.getAlbum())
-                .artist(song.getArtist())
-                .durationMs(song.getDurationMs())
-                .playCount(song.getPlayCount())
-                .playlistIndex(song.getPlaylistIndex())
-                .rating(song.getRating())
-                .removed(song.isRemoved())
-                .build();
-    }
+    @Mapping(target = "playlists", ignore = true)
+    SongEntity mapSongToSongEntity(Song song);
 
-    public List<Song> mapSongEntitiesToSongs(List<SongEntity> songEntities) {
-        return songEntities.stream().map(this::mapSongEntityToSong).collect(Collectors.toList());
-    }
+    List<Song> mapSongEntitiesToSongs(List<SongEntity> songEntities);
 
-    public Song mapSongEntityToSong(SongEntity songEntity) {
-        return Song.builder()
-                .id(songEntity.getId())
-                .title(songEntity.getTitle())
-                .artist(songEntity.getArtist())
-                .album(songEntity.getAlbum())
-                .durationMs(songEntity.getDurationMs())
-                .playCount(songEntity.getPlayCount())
-                .playlistIndex(songEntity.getPlaylistIndex())
-                .removed(songEntity.isRemoved())
-                .rating(songEntity.getRating())
-                .build();
-    }
+    Song mapSongEntityToSong(SongEntity songEntity) ;
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "durationMs", expression = "java(Integer.parseInt(songCsvObject.getDurationMs()))")
+    @Mapping(target = "playCount", expression = "java(Integer.parseInt(songCsvObject.getPlayCount()))")
+    @Mapping(target = "rating", expression = "java(Integer.parseInt(songCsvObject.getRating()))")
+    @Mapping(target = "playlistIndex", expression = "java(Integer.parseInt(songCsvObject.getPlaylistIndex()))")
+    @Mapping(target = "removed", expression = "java(Boolean.parseBoolean(songCsvObject.getRemoved()))")
+    Song mapSongCsvObjectToSong(SongCsvObject songCsvObject);
 
 }
