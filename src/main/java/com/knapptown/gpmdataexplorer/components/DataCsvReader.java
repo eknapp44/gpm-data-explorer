@@ -2,7 +2,7 @@ package com.knapptown.gpmdataexplorer.components;
 
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import com.knapptown.gpmdataexplorer.mappers.SongModelMapper;
+import com.knapptown.gpmdataexplorer.mappers.SongMapper;
 import com.knapptown.gpmdataexplorer.models.Playlist;
 import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.models.SongCsvObject;
@@ -19,20 +19,20 @@ public class DataCsvReader {
 
     private final CsvMapper csvMapper;
     private final CsvSchema csvSchema;
-    private final SongModelMapper songModelMapper;
+    private final SongMapper songMapper;
 
     /**
      * Create a Data CSV Reader using schema, mapper, and Song Model Mapper instances.
      * @param csvMapper A CSV Mapper instance.
      * @param csvSchema A CSV Schema instance.
-     * @param songModelMapper A Song Model mapper instance.
+     * @param songMapper A Song mapper instance.
      */
     public DataCsvReader(CsvMapper csvMapper,
                          CsvSchema csvSchema,
-                         SongModelMapper songModelMapper) {
+                         SongMapper songMapper) {
         this.csvMapper = csvMapper;
         this.csvSchema = csvSchema;
-        this.songModelMapper = songModelMapper;
+        this.songMapper = songMapper;
     }
 
     /**
@@ -59,7 +59,7 @@ public class DataCsvReader {
         SongCsvObject object = csvMapper.readerFor(SongCsvObject.class)
                 .with(csvSchema)
                 .readValue(path.toFile()) ;
-        return songModelMapper.mapSongCsvObjectToSong(object);
+        return songMapper.mapSongCsvObjectToSong(object);
     }
 
 }
