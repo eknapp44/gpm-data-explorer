@@ -59,7 +59,12 @@ public class SongDataProcessor extends DataCsvProcessor<Song> {
         }
 
         song = decodeData(song);
-        song = songService.saveSong(song);
+        if (songService.songExists(song)) {
+            logger.info("Song '" + song.getTitle() + "' by '" + song.getArtist()
+                    + "' on album '" + song.getAlbum() + "' already exists... Skipping.");
+        } else {
+            song = songService.saveSong(song);
+        }
 
         logger.info("Processed song metadata file: " + song.getTitle() + " by: " + song.getArtist());
         return song;
@@ -72,7 +77,6 @@ public class SongDataProcessor extends DataCsvProcessor<Song> {
      */
     private Song decodeData(Song song) {
         return Song.builder()
-                .id(song.getId())
                 .title(dataStringDecoder.decodeDataString(song.getTitle()))
                 .artist(dataStringDecoder.decodeDataString(song.getArtist()))
                 .album(dataStringDecoder.decodeDataString(song.getAlbum()))
