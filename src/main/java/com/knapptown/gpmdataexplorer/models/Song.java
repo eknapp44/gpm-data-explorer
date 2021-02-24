@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Song {
 
-    private Long id;
     private String title;
     private String album;
     private String artist;
@@ -21,5 +21,21 @@ public class Song {
     private int playCount;
     private boolean removed;
     private int playlistIndex;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof  Song) {
+            Song song = (Song) obj;
+            return this.title.equals(song.getTitle()) &&
+                    this.artist.equals(song.getArtist()) &&
+                    this.album.equals(song.getAlbum());
+        }
+        return false;
+    }
+
+    @Override
+    public int  hashCode() {
+        return title.hashCode() + this.artist.hashCode() + this.album.hashCode();
+    }
 
 }

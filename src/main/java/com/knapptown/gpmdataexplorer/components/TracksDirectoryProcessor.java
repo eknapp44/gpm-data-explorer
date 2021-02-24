@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,6 +61,12 @@ public class TracksDirectoryProcessor extends DirectoryProcessor<List<Song>> {
         } catch (IOException e) {
             throw new DataProcessingException("Error Processing tracks Directory: " + tracksDirectory, e);
         }
+
+        boolean equals = songs.get(1).equals(songs.get(2));
+
+        logger.info("Size of playlist: " + songs.size());
+        Set<Song> songSet = new HashSet<>(songs);
+        songs = new ArrayList<>(songSet);
 
         logger.info("Processed: " + songs.size() + " songs in tracks directory.");
         logger.info("Processed tracks directory: " + tracksDirectory);

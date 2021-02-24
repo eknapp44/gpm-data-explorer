@@ -1,6 +1,7 @@
 package com.knapptown.gpmdataexplorer.mappers;
 
 import com.knapptown.gpmdataexplorer.entities.SongEntity;
+import com.knapptown.gpmdataexplorer.entities.SongId;
 import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.models.SongCsvObject;
 import org.junit.jupiter.api.Test;
@@ -9,13 +10,11 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SongMapperTest {
 
     private final SongMapper songMapper = Mappers.getMapper(SongMapper.class);
 
-    private static final Long TEST_ID = 444L;
     private static final String TEST_TITLE = "Song Title";
     private static final String TEST_ALBUM = "Album Title";
     private static final String TEST_ARTIST = "Artist Name";
@@ -30,10 +29,9 @@ public class SongMapperTest {
         Song song = createTestSong();
         SongEntity entity = songMapper.mapSongToSongEntity(song);
 
-        assertEquals(TEST_ID, entity.getId());
-        assertEquals(TEST_ALBUM, entity.getAlbum());
-        assertEquals(TEST_ARTIST, entity.getArtist());
-        assertEquals(TEST_TITLE, entity.getTitle());
+        assertEquals(TEST_ALBUM, entity.getId().getAlbum());
+        assertEquals(TEST_ARTIST, entity.getId().getArtist());
+        assertEquals(TEST_TITLE, entity.getId().getTitle());
         assertEquals(TEST_DURATION, entity.getDurationMs());
         assertEquals(TEST_RATING, entity.getRating());
         assertEquals(TEST_PLAY_COUNT, entity.getPlayCount());
@@ -46,7 +44,6 @@ public class SongMapperTest {
         SongEntity entity = createTestSongEntity();
         Song song = songMapper.mapSongEntityToSong(entity);
 
-        assertEquals(TEST_ID, song.getId());
         assertEquals(TEST_ALBUM, song.getAlbum());
         assertEquals(TEST_ARTIST, song.getArtist());
         assertEquals(TEST_TITLE, song.getTitle());
@@ -78,7 +75,6 @@ public class SongMapperTest {
         SongCsvObject songCsvObject = createTestSongCsvObject();
         Song song = songMapper.mapSongCsvObjectToSong(songCsvObject);
 
-        assertNull(song.getId());
         assertEquals(TEST_ALBUM, song.getAlbum());
         assertEquals(TEST_ARTIST, song.getArtist());
         assertEquals(TEST_TITLE, song.getTitle());
@@ -91,7 +87,6 @@ public class SongMapperTest {
 
     private Song createTestSong() {
         return Song.builder()
-                .id(TEST_ID)
                 .title(TEST_TITLE)
                 .album(TEST_ALBUM)
                 .artist(TEST_ARTIST)
@@ -104,11 +99,14 @@ public class SongMapperTest {
     }
 
     private SongEntity createTestSongEntity() {
-        return SongEntity.builder()
-                .id(TEST_ID)
+        SongId id  = SongId.builder()
                 .title(TEST_TITLE)
                 .artist(TEST_ARTIST)
                 .album(TEST_ALBUM)
+                .build();
+
+        return SongEntity.builder()
+                .id(id)
                 .durationMs(TEST_DURATION)
                 .rating(TEST_RATING)
                 .playCount(TEST_PLAY_COUNT)

@@ -1,16 +1,18 @@
 package com.knapptown.gpmdataexplorer.controllers;
 
+import com.knapptown.gpmdataexplorer.entities.SongId;
 import com.knapptown.gpmdataexplorer.exceptions.SongNotFoundException;
 import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.services.SongService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,15 @@ public class SongController {
         return songService.getAllSongs();
     }
 
-    @GetMapping("/{id}")
-    public Song getSong(@PathVariable Long id) {
+    @GetMapping("/id")
+    public Song getSong(@NotNull @RequestParam(name = "title") String title,
+                        @NotNull @RequestParam(name = "artist") String artist,
+                        @NotNull @RequestParam(name = "album") String album) {
+        SongId id = SongId.builder()
+                .title(title)
+                .artist(artist)
+                .album(album)
+                .build();
         return songService.getSong(id);
     }
 
@@ -38,8 +47,16 @@ public class SongController {
         return songService.saveSong(song);
     }
 
-    @PutMapping("/{id}")
-    public Song updateSong(@PathVariable Long id, @RequestBody Song song) {
+    @PutMapping
+    public Song updateSong(@NotNull @RequestParam(name = "title") String title,
+                           @NotNull @RequestParam(name = "artist") String artist,
+                           @NotNull @RequestParam(name = "album") String album,
+                           @RequestBody Song song) {
+        SongId id = SongId.builder()
+                .title(title)
+                .artist(artist)
+                .album(album)
+                .build();
         Song original = songService.getSong(id);
 
         if (original == null) {

@@ -47,7 +47,10 @@ public class PlaylistEntity implements Serializable {
     @JoinTable(
         name = "playlist_song",
         joinColumns = @JoinColumn(name = "playlist_id"),
-        inverseJoinColumns = @JoinColumn(name = "song_id")
+        inverseJoinColumns = {@JoinColumn(name = "song_title"),
+                @JoinColumn(name = "song_artist"),
+                @JoinColumn(name = "song_album"
+                )}
     )
     @JsonIgnoreProperties("playlists")
     private List<SongEntity> songs;
