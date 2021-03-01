@@ -10,15 +10,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Song {
+public class PlaylistEntry {
 
-    private Long id;
-    private String title;
-    private String album;
-    private String artist;
-    private int durationMs;
-    private int rating;
-    private int playCount;
-    private boolean removed;
+    private Song song;
+    private Playlist playlist;
+    private int playlistIndex;
 
 }

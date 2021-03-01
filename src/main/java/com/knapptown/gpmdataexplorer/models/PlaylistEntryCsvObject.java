@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class SongCsvObject {
+public class PlaylistEntryCsvObject {
     private String title;
     private String album;
     private String artist;

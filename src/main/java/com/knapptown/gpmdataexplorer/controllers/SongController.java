@@ -53,7 +53,6 @@ public class SongController {
         original.setPlayCount(song.getPlayCount());
         original.setRating(song.getRating());
         original.setRemoved(song.isRemoved());
-        original.setPlaylistIndex(song.getPlaylistIndex());
         return songService.saveSong(original);
     }
 

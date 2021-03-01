@@ -1,8 +1,8 @@
 package com.knapptown.gpmdataexplorer.components;
 
 import com.knapptown.gpmdataexplorer.models.Playlist;
-import com.knapptown.gpmdataexplorer.models.Song;
-import com.knapptown.gpmdataexplorer.services.PlaylistService;
+import com.knapptown.gpmdataexplorer.models.PlaylistEntry;
+import com.knapptown.gpmdataexplorer.services.PlaylistEntryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -24,21 +24,21 @@ public class PlaylistDirectoryProcessor extends DirectoryProcessor<Playlist> {
 
     private final TracksDirectoryProcessor tracksDirectoryProcessor;
     private final PlaylistDataProcessor playlistMetadataProcessor;
-    private final PlaylistService playlistService;
+    private final PlaylistEntryService playlistEntryService;
 
     /**
      * Create a Playlist Directory Processor using a Playlist Metadata processor,
-     * a Tracks Directory processor, and a Playlist Service instance.
+     * a Tracks Directory processor, and a Song Playlist Service instance.
      * @param tracksDirectoryProcessor A Track Directory Processor instance.
      * @param playlistMetadataProcessor A Playlist Metadata Processor instance.
-     * @param playlistService A playlist service instance.
+     * @param playlistEntryService A playlist entry service instance.
      */
     public PlaylistDirectoryProcessor(TracksDirectoryProcessor tracksDirectoryProcessor,
                                       PlaylistDataProcessor playlistMetadataProcessor,
-                                      PlaylistService playlistService) {
+                                      PlaylistEntryService playlistEntryService) {
         this.tracksDirectoryProcessor = tracksDirectoryProcessor;
         this.playlistMetadataProcessor = playlistMetadataProcessor;
-        this.playlistService = playlistService;
+        this.playlistEntryService = playlistEntryService;
     }
 
     /**
@@ -54,11 +54,14 @@ public class PlaylistDirectoryProcessor extends DirectoryProcessor<Playlist> {
         Playlist playlist =playlistMetadataProcessor.process(metadataFile);
 
         Path tracksDirectory = Paths.get(path.toString(), TRACK_DIRECTORY);
-        List<Song> songs = tracksDirectoryProcessor.process(tracksDirectory);
+        List<PlaylistEntry> playlistEntries = tracksDirectoryProcessor.process(tracksDirectory);
 
-        if (songs != null && !songs.isEmpty()) {
-            logger.info("Adding " + songs.size() + " songs to playlist: " + playlist.getTitle());
-            playlist = playlistService.addSongsToPlaylist(playlist, songs);
+        if (playlistEntries != null && !playlistEntries.isEmpty()) {
+            logger.info("Adding " + playlistEntries.size() + " songs to playlist: " + playlist.getTitle());
+            for (PlaylistEntry playlistEntry : playlistEntries) {
+                playlistEntry.setPlaylist(playlist);
+            }
+            playlistEntryService.savePlaylistEntries(playlistEntries);
         }
 
         logger.info("Processed playlist directory: " + path);
