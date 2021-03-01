@@ -1,7 +1,7 @@
 package com.knapptown.gpmdataexplorer.components;
 
 import com.knapptown.gpmdataexplorer.exceptions.DataProcessingException;
-import com.knapptown.gpmdataexplorer.models.Song;
+import com.knapptown.gpmdataexplorer.models.PlaylistEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -21,37 +21,37 @@ import static com.knapptown.gpmdataexplorer.ApplicationConstants.CSV_EXTENSION;
  * to add to a playlist.
  */
 @Component
-public class TracksDirectoryProcessor extends DirectoryProcessor<List<Song>> {
+public class TracksDirectoryProcessor extends DirectoryProcessor<List<PlaylistEntry>> {
 
     private static final Logger logger = LoggerFactory.getLogger(TracksDirectoryProcessor.class);
 
-    private final SongDataProcessor songProcessor;
+    private final PlaylistEntryDataProcessor playlistEntryProcessor;
 
     /**
-     * Create a Tracks Directory processor using a Song Metadata Processor instance.
-     * @param songProcessor A song metadata processor instance.
+     * Create a Tracks Directory processor using a Playlist Entry Metadata Processor instance.
+     * @param playlistEntryProcessor A playlist entry metadata processor instance.
      */
-    public TracksDirectoryProcessor(SongDataProcessor songProcessor) {
-        this.songProcessor = songProcessor;
+    public TracksDirectoryProcessor(PlaylistEntryDataProcessor playlistEntryProcessor) {
+        this.playlistEntryProcessor = playlistEntryProcessor;
     }
 
     /**
      * Process a tracks directory given a track directory path.
      * @param tracksDirectory A tracks directory path.
-     * @return A list of songs.
+     * @return A list of playlist entries.
      */
     @Override
-    List<Song> processDirectory(Path tracksDirectory) {
+    List<PlaylistEntry> processDirectory(Path tracksDirectory) {
         logger.info("Processing tracks directory: " + tracksDirectory);
-        List<Song> songs;
+        List<PlaylistEntry> playlistEntries;
         try (Stream<Path> walk = Files.walk(tracksDirectory, 1)) {
-            songs = walk.map(path -> {
+            playlistEntries = walk.map(path -> {
                 if (path.equals(tracksDirectory) || path.getFileName().toString().equals(CSV_EXTENSION)) {
                     return null;
                 }
 
                 if (path.toFile().isFile() && path.toFile().getName().endsWith(CSV_EXTENSION)) {
-                    return songProcessor.process(path);
+                    return playlistEntryProcessor.process(path);
                 }
                 return null;
             }).filter(Objects::nonNull).collect(Collectors.toList());
@@ -59,9 +59,9 @@ public class TracksDirectoryProcessor extends DirectoryProcessor<List<Song>> {
             throw new DataProcessingException("Error Processing tracks Directory: " + tracksDirectory, e);
         }
 
-        logger.info("Processed: " + songs.size() + " songs in tracks directory.");
+        logger.info("Processed: " + playlistEntries.size() + " playlist entries in tracks directory.");
         logger.info("Processed tracks directory: " + tracksDirectory);
-        return songs;
+        return playlistEntries;
     }
 
 }

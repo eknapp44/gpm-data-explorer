@@ -12,7 +12,7 @@ public interface PlaylistMapper {
 
     List<PlaylistEntity> mapPlaylistsToPlaylistEntities(List<Playlist> playlists);
 
-    @Mapping(target = "songs", ignore = true)
+    @Mapping(target = "playlistEntries", ignore = true)
     PlaylistEntity mapPlaylistToPlaylistEntity(Playlist playlist);
 
     List<Playlist> mapPlaylistEntitiesToPlaylists(List<PlaylistEntity> playlistEntities);

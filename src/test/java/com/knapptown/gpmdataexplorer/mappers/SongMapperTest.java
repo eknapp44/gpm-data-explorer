@@ -1,65 +1,52 @@
 package com.knapptown.gpmdataexplorer.mappers;
 
+import com.knapptown.gpmdataexplorer.TestDataCreator;
 import com.knapptown.gpmdataexplorer.entities.SongEntity;
 import com.knapptown.gpmdataexplorer.models.Song;
-import com.knapptown.gpmdataexplorer.models.SongCsvObject;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SongMapperTest {
 
     private final SongMapper songMapper = Mappers.getMapper(SongMapper.class);
 
-    private static final Long TEST_ID = 444L;
-    private static final String TEST_TITLE = "Song Title";
-    private static final String TEST_ALBUM = "Album Title";
-    private static final String TEST_ARTIST = "Artist Name";
-    private static final int TEST_DURATION = 122333;
-    private static final int TEST_RATING = 3;
-    private static final int TEST_PLAY_COUNT = 44;
-    private static final boolean TEST_REMOVED = false;
-    private static final int TEST_PLAYLIST_INDEX = 4;
-
     @Test
     public void testMapSongToSongEntity() {
-        Song song = createTestSong();
+        Song song = TestDataCreator.createTestSong();
         SongEntity entity = songMapper.mapSongToSongEntity(song);
 
-        assertEquals(TEST_ID, entity.getId());
-        assertEquals(TEST_ALBUM, entity.getAlbum());
-        assertEquals(TEST_ARTIST, entity.getArtist());
-        assertEquals(TEST_TITLE, entity.getTitle());
-        assertEquals(TEST_DURATION, entity.getDurationMs());
-        assertEquals(TEST_RATING, entity.getRating());
-        assertEquals(TEST_PLAY_COUNT, entity.getPlayCount());
-        assertEquals(TEST_REMOVED, entity.isRemoved());
-        assertEquals(TEST_PLAYLIST_INDEX, entity.getPlaylistIndex());
+        assertEquals(TestDataCreator.TEST_SONG_ID, entity.getId());
+        assertEquals(TestDataCreator.TEST_ALBUM, entity.getAlbum());
+        assertEquals(TestDataCreator.TEST_ARTIST, entity.getArtist());
+        assertEquals(TestDataCreator.TEST_SONG_TITLE, entity.getTitle());
+        assertEquals(TestDataCreator.TEST_DURATION, entity.getDurationMs());
+        assertEquals(TestDataCreator.TEST_RATING, entity.getRating());
+        assertEquals(TestDataCreator.TEST_PLAY_COUNT, entity.getPlayCount());
+        assertEquals(TestDataCreator.TEST_REMOVED, entity.isRemoved());
     }
 
     @Test
     public void testMapSongEntitiesToSong() {
-        SongEntity entity = createTestSongEntity();
+        SongEntity entity = TestDataCreator.createTestSongEntity();
         Song song = songMapper.mapSongEntityToSong(entity);
 
-        assertEquals(TEST_ID, song.getId());
-        assertEquals(TEST_ALBUM, song.getAlbum());
-        assertEquals(TEST_ARTIST, song.getArtist());
-        assertEquals(TEST_TITLE, song.getTitle());
-        assertEquals(TEST_DURATION, song.getDurationMs());
-        assertEquals(TEST_RATING, song.getRating());
-        assertEquals(TEST_PLAY_COUNT, song.getPlayCount());
-        assertEquals(TEST_REMOVED, song.isRemoved());
-        assertEquals(TEST_PLAYLIST_INDEX, song.getPlaylistIndex());
+        assertEquals(TestDataCreator.TEST_SONG_ID, song.getId());
+        assertEquals(TestDataCreator.TEST_ALBUM, song.getAlbum());
+        assertEquals(TestDataCreator.TEST_ARTIST, song.getArtist());
+        assertEquals(TestDataCreator.TEST_SONG_TITLE, song.getTitle());
+        assertEquals(TestDataCreator.TEST_DURATION, song.getDurationMs());
+        assertEquals(TestDataCreator.TEST_RATING, song.getRating());
+        assertEquals(TestDataCreator.TEST_PLAY_COUNT, song.getPlayCount());
+        assertEquals(TestDataCreator.TEST_REMOVED, song.isRemoved());
     }
 
     @Test
     public void testMapSongsToSongEntities() {
-        List<Song> songs = createTestSongList();
+        List<Song> songs = TestDataCreator.createTestSongList();
         List<SongEntity> entities = songMapper.mapSongsToSongEntities(songs);
 
         assertEquals(2, entities.size());
@@ -67,75 +54,10 @@ public class SongMapperTest {
 
     @Test
     public void testMapSongEntitiesToSongs() {
-        List<SongEntity> entities = createTestSongEntityList();
+        List<SongEntity> entities = TestDataCreator.createTestSongEntityList();
         List<Song> songs = songMapper.mapSongEntitiesToSongs(entities);
 
         assertEquals(2, songs.size());
-    }
-
-    @Test
-    public void testMapSongCsvObjectToSong() {
-        SongCsvObject songCsvObject = createTestSongCsvObject();
-        Song song = songMapper.mapSongCsvObjectToSong(songCsvObject);
-
-        assertNull(song.getId());
-        assertEquals(TEST_ALBUM, song.getAlbum());
-        assertEquals(TEST_ARTIST, song.getArtist());
-        assertEquals(TEST_TITLE, song.getTitle());
-        assertEquals(TEST_DURATION, song.getDurationMs());
-        assertEquals(TEST_RATING, song.getRating());
-        assertEquals(TEST_PLAY_COUNT, song.getPlayCount());
-        assertEquals(TEST_REMOVED, song.isRemoved());
-        assertEquals(TEST_PLAYLIST_INDEX, song.getPlaylistIndex());
-    }
-
-    private Song createTestSong() {
-        return Song.builder()
-                .id(TEST_ID)
-                .title(TEST_TITLE)
-                .album(TEST_ALBUM)
-                .artist(TEST_ARTIST)
-                .durationMs(TEST_DURATION)
-                .rating(TEST_RATING)
-                .playCount(TEST_PLAY_COUNT)
-                .removed(TEST_REMOVED)
-                .playlistIndex(TEST_PLAYLIST_INDEX)
-                .build();
-    }
-
-    private SongEntity createTestSongEntity() {
-        return SongEntity.builder()
-                .id(TEST_ID)
-                .title(TEST_TITLE)
-                .artist(TEST_ARTIST)
-                .album(TEST_ALBUM)
-                .durationMs(TEST_DURATION)
-                .rating(TEST_RATING)
-                .playCount(TEST_PLAY_COUNT)
-                .removed(TEST_REMOVED)
-                .playlistIndex(TEST_PLAYLIST_INDEX)
-                .build();
-    }
-
-    private List<Song> createTestSongList() {
-        return List.of(createTestSong(), createTestSong());
-    }
-
-    private List<SongEntity> createTestSongEntityList() {
-        return List.of(createTestSongEntity(), createTestSongEntity());
-    }
-
-    private SongCsvObject createTestSongCsvObject() {
-        SongCsvObject songCsvObject = new SongCsvObject();
-        songCsvObject.setTitle(TEST_TITLE);
-        songCsvObject.setAlbum(TEST_ALBUM);
-        songCsvObject.setArtist(TEST_ARTIST);
-        songCsvObject.setDurationMs(String.valueOf(TEST_DURATION));
-        songCsvObject.setPlayCount(String.valueOf(TEST_PLAY_COUNT));
-        songCsvObject.setPlaylistIndex(String.valueOf(TEST_PLAYLIST_INDEX));
-        songCsvObject.setRating(String.valueOf(TEST_RATING));
-        songCsvObject.setRemoved(String.valueOf(TEST_REMOVED));
-        return  songCsvObject;
     }
 
 }

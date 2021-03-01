@@ -1,6 +1,7 @@
 package com.knapptown.gpmdataexplorer.components;
 
 import com.knapptown.gpmdataexplorer.exceptions.DataProcessingException;
+import com.knapptown.gpmdataexplorer.models.PlaylistEntry;
 import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.services.SongService;
 import org.slf4j.Logger;
@@ -14,55 +15,60 @@ import java.nio.file.Path;
  * Process a Song's metadata CSV file.
  */
 @Component
-public class SongDataProcessor extends DataCsvProcessor<Song> {
+public class PlaylistEntryDataProcessor extends DataCsvProcessor<PlaylistEntry> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SongDataProcessor.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlaylistEntryDataProcessor.class);
 
     private final SongService songService;
     private final DataStringDecoder dataStringDecoder;
 
     /**
-     * Create a Song Metadata Processor given a Data CSV Reader.
+     * Create a Playlist Entry Metadata Processor given a Data CSV Reader.
      * @param dataCsvReader A data CSV Reader instance.
      * @param songService A Song Service Instance..
      */
-    public SongDataProcessor(DataCsvReader dataCsvReader,
-                             DataStringDecoder dataStringDecoder,
-                             SongService songService) {
+    public PlaylistEntryDataProcessor(DataCsvReader dataCsvReader,
+                                      DataStringDecoder dataStringDecoder,
+                                      SongService songService) {
         super(dataCsvReader);
         this.dataStringDecoder = dataStringDecoder;
         this.songService = songService;
     }
 
     /**
-     * Process a Song Metadata CSV File path.
+     * Process a Playlist Entry Metadata CSV File path.
      * @param path A CSV metadata file path.
-     * @return A Song instance.
+     * @return A Playlist Entry instance.
      */
-    Song processCsvFile(Path path) {
-        logger.info("Processing song metadata file: " + path);
-        Song song;
+    PlaylistEntry processCsvFile(Path path) {
+        logger.info("Processing playlist entry metadata file: " + path);
+        PlaylistEntry playlistEntry;
         try {
-            song = getDataCsvReader().readSongFromCsv(path);
+            playlistEntry = getDataCsvReader().readPlaylistEntryFromCsv(path);
         } catch (IOException e) {
-            throw new DataProcessingException("Failed to process song metadata file: " + path, e);
+            throw new DataProcessingException("Failed to process playlist entry metadata file: " + path, e);
         }
 
-        if (song == null) {
-            throw new IllegalArgumentException("Invalid song metadata file: " + path);
+        if (playlistEntry == null) {
+            throw new IllegalArgumentException("Invalid playlist entry metadata file: " + path);
         }
+
+        Song song = playlistEntry.getSong();
 
         // Case when hitting a ".csv" or "(1).csv" file from GPM.
-        if ( song.getTitle().isBlank()) {
-            logger.warn("Found invalid song metadata file: " + path + ". Ignoring...");
+        if (song.getTitle().isBlank()) {
+            logger.warn("Found invalid playlist entry metadata file: " + path + ". Ignoring...");
             return null;
         }
 
         song = decodeData(song);
+        // TODO check for duplicates.
         song = songService.saveSong(song);
 
-        logger.info("Processed song metadata file: " + song.getTitle() + " by: " + song.getArtist());
-        return song;
+        playlistEntry.setSong(song);
+
+        logger.info("Processed playlist entry metadata file: " + song.getTitle() + " by: " + song.getArtist());
+        return playlistEntry;
     }
 
     /**
@@ -78,7 +84,6 @@ public class SongDataProcessor extends DataCsvProcessor<Song> {
                 .album(dataStringDecoder.decodeDataString(song.getAlbum()))
                 .durationMs(song.getDurationMs())
                 .playCount(song.getPlayCount())
-                .playlistIndex(song.getPlaylistIndex())
                 .rating(song.getRating())
                 .removed(song.isRemoved())
                 .build();

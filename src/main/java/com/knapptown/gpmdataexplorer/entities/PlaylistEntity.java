@@ -3,18 +3,13 @@ package com.knapptown.gpmdataexplorer.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,29 +38,7 @@ public class PlaylistEntity implements Serializable {
     private boolean shared;
     private boolean deleted;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "playlist_song",
-        joinColumns = @JoinColumn(name = "playlist_id"),
-        inverseJoinColumns = @JoinColumn(name = "song_id")
-    )
-    @JsonIgnoreProperties("playlists")
-    private List<SongEntity> songs;
-
-    /**
-     * Add a Song Entity instance to the Playlist's list of songs.
-     * @param songEntity A Song Entity instance.
-     */
-    public void addSong(SongEntity songEntity) {
-        this.songs.add(songEntity);
-    }
-
-    /**
-     * Add a list of Song Entity instances to the Playlist's list of songs.
-     * @param songEntities A List of Song Entity instances.
-     */
-    public void addSongs(List<SongEntity> songEntities) {
-        this.songs.addAll(songEntities);
-    }
+    @OneToMany(mappedBy = "playlist")
+    private List<PlaylistEntryEntity> playlistEntries;
 
 }
