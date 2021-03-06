@@ -12,7 +12,6 @@ import java.util.List;
 
 public class TestDataCreator {
 
-    public static final Long TEST_SONG_ID = 444L;
     public static final String TEST_SONG_TITLE = "Song Title";
     public static final String TEST_ALBUM = "Album Title";
     public static final String TEST_ARTIST = "Artist Name";
@@ -22,7 +21,6 @@ public class TestDataCreator {
     public static final boolean TEST_REMOVED = false;
     public static final int TEST_PLAYLIST_INDEX = 4;
 
-    public final static Long TEST_PLAYLIST_ID = 666L;
     public final static String TEST_PLAYLIST_TITLE = "Test Title";
     public final static String TEST_OWNER = "John Doe";
     public final static String TEST_DESCRIPTION = "Playlist Description";
@@ -63,7 +61,6 @@ public class TestDataCreator {
 
     public static Song createTestSong() {
         return Song.builder()
-                .id(TEST_SONG_ID)
                 .title(TEST_SONG_TITLE)
                 .album(TEST_ALBUM)
                 .artist(TEST_ARTIST)
@@ -76,7 +73,6 @@ public class TestDataCreator {
 
     public static SongEntity createTestSongEntity() {
         return SongEntity.builder()
-                .id(TEST_SONG_ID)
                 .title(TEST_SONG_TITLE)
                 .artist(TEST_ARTIST)
                 .album(TEST_ALBUM)
@@ -101,7 +97,6 @@ public class TestDataCreator {
 
     public static Playlist createTestPlaylist() {
         return Playlist.builder()
-                .id(TEST_PLAYLIST_ID)
                 .title(TEST_PLAYLIST_TITLE)
                 .owner(TEST_OWNER)
                 .description(TEST_DESCRIPTION)
@@ -112,7 +107,6 @@ public class TestDataCreator {
 
     public static PlaylistEntity createTestPlaylistEntity() {
         return PlaylistEntity.builder()
-                .id(TEST_PLAYLIST_ID)
                 .title(TEST_PLAYLIST_TITLE)
                 .owner(TEST_OWNER)
                 .description(TEST_DESCRIPTION)

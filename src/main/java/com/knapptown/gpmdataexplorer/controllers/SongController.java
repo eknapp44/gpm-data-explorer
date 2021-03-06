@@ -28,9 +28,9 @@ public class SongController {
         return songService.getAllSongs();
     }
 
-    @GetMapping("/{id}")
-    public Song getSong(@PathVariable Long id) {
-        return songService.getSong(id);
+    @GetMapping("/artist/{artist}/album/{album}/title/{title}")
+    public Song getSong(@PathVariable String artist, @PathVariable String album, @PathVariable String title) {
+        return songService.getSong(title, artist, album);
     }
 
     @PostMapping
@@ -38,12 +38,12 @@ public class SongController {
         return songService.saveSong(song);
     }
 
-    @PutMapping("/{id}")
-    public Song updateSong(@PathVariable Long id, @RequestBody Song song) {
-        Song original = songService.getSong(id);
+    @PutMapping("/artist/{artist}/album/{album}/title/{title}")
+    public Song updateSong(@PathVariable String artist, @PathVariable String album, @PathVariable String title, @RequestBody Song song) {
+        Song original = songService.getSong(title, artist, album);
 
         if (original == null) {
-            throw new SongNotFoundException(id);
+            throw new SongNotFoundException(title, artist, album);
         }
 
         original.setTitle(song.getTitle());

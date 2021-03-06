@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.knapptown.gpmdataexplorer.entities.PlaylistEntity;
+import com.knapptown.gpmdataexplorer.entities.PlaylistEntityId;
 import com.knapptown.gpmdataexplorer.exceptions.PlaylistNotFoundException;
 import com.knapptown.gpmdataexplorer.mappers.PlaylistMapper;
 import com.knapptown.gpmdataexplorer.models.Playlist;
@@ -30,9 +31,13 @@ public class PlaylistService {
     }
 
     @Transactional
-    public Playlist getPlaylist(Long id) {
+    public Playlist getPlaylist(String owner, String title) {
+        PlaylistEntityId id = PlaylistEntityId.builder()
+                .owner(owner)
+                .title(title)
+                .build();
         PlaylistEntity playlistEntity = playlistRepository.findById(id)
-                .orElseThrow(() -> new PlaylistNotFoundException(id));
+                .orElseThrow(() -> new PlaylistNotFoundException(owner, title));
         return playlistMapper.mapPlaylistEntityToPlaylist(playlistEntity);
     }
 

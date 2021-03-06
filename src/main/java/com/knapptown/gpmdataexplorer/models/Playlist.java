@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Playlist {
 
-    private Long id;
     private String title;
     private String owner;
     private String description;

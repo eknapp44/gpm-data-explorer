@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
@@ -24,12 +25,18 @@ public class PlaylistEntryEntity implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "song_id", nullable = false)
+    @JoinColumns({
+            @JoinColumn(name = "song_title", nullable = false),
+            @JoinColumn(name = "song_artist", nullable = false),
+            @JoinColumn(name = "song_album", nullable = false)
+    })
     private SongEntity song;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "playlist_id", nullable = false)
+    @JoinColumns(value = {
+            @JoinColumn(name = "playlist_owner", nullable = false),
+            @JoinColumn(name = "playlist_title", nullable = false)})
     private PlaylistEntity playlist;
 
     @Id

@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Song {
 
-    private Long id;
     private String title;
     private String album;
     private String artist;

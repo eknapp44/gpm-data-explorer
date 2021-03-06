@@ -12,8 +12,7 @@ import java.io.Serializable;
 @Getter @Setter @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PlaylistEntryEntityId implements Serializable {
-    private SongEntityId song;
-    private PlaylistEntityId playlist;
-    private int playlistIndex;
+public class PlaylistEntityId implements Serializable  {
+    private String title;
+    private String owner;
 }

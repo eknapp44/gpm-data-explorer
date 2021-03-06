@@ -69,7 +69,6 @@ public class PlaylistDataProcessor extends DataCsvProcessor<Playlist> {
      */
     private Playlist decodeData(Playlist playlist) {
         return Playlist.builder()
-                .id(playlist.getId())
                 .title(dataStringDecoder.decodeDataString(playlist.getTitle()))
                 .description(dataStringDecoder.decodeDataString(playlist.getDescription()))
                 .owner(dataStringDecoder.decodeDataString(playlist.getOwner()))

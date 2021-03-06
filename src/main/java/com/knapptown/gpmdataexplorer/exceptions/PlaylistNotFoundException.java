@@ -2,10 +2,10 @@ package com.knapptown.gpmdataexplorer.exceptions;
 
 public class PlaylistNotFoundException extends RuntimeException {
 
-    private static final String  errorMessage = "Playlist '%d' not found.";
+    private static final String  errorMessage = "Playlist '%s' by '%s' not found.";
 
-    public PlaylistNotFoundException(Long playlistId) {
-        super(String.format(errorMessage, playlistId));
+    public PlaylistNotFoundException(String owner, String title) {
+        super(String.format(errorMessage, title, owner));
     }
 
 }

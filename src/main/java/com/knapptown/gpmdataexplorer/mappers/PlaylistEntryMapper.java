@@ -24,7 +24,6 @@ public interface PlaylistEntryMapper {
     @Mapping(target = "song", expression = "java(mapPlaylistEntryCsvObjectToSong(playlistEntryCsvObject))")
     PlaylistEntry mapPlaylistEntryCsvObjectToPlaylistEntry(PlaylistEntryCsvObject playlistEntryCsvObject);
 
-    @Mapping(target = "id", ignore = true)
     Song mapPlaylistEntryCsvObjectToSong(PlaylistEntryCsvObject playlistEntryCsvObject);
 
 }

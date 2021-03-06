@@ -19,7 +19,6 @@ public class SongMapperTest {
         Song song = TestDataCreator.createTestSong();
         SongEntity entity = songMapper.mapSongToSongEntity(song);
 
-        assertEquals(TestDataCreator.TEST_SONG_ID, entity.getId());
         assertEquals(TestDataCreator.TEST_ALBUM, entity.getAlbum());
         assertEquals(TestDataCreator.TEST_ARTIST, entity.getArtist());
         assertEquals(TestDataCreator.TEST_SONG_TITLE, entity.getTitle());
@@ -34,7 +33,6 @@ public class SongMapperTest {
         SongEntity entity = TestDataCreator.createTestSongEntity();
         Song song = songMapper.mapSongEntityToSong(entity);
 
-        assertEquals(TestDataCreator.TEST_SONG_ID, song.getId());
         assertEquals(TestDataCreator.TEST_ALBUM, song.getAlbum());
         assertEquals(TestDataCreator.TEST_ARTIST, song.getArtist());
         assertEquals(TestDataCreator.TEST_SONG_TITLE, song.getTitle());

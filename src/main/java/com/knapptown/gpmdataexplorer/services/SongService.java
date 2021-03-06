@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.knapptown.gpmdataexplorer.entities.SongEntity;
+import com.knapptown.gpmdataexplorer.entities.SongEntityId;
 import com.knapptown.gpmdataexplorer.exceptions.SongNotFoundException;
 import com.knapptown.gpmdataexplorer.mappers.SongMapper;
 import com.knapptown.gpmdataexplorer.models.Song;
@@ -30,7 +31,12 @@ public class SongService {
     }
 
     @Transactional
-    public Song getSong(Long id) {
+    public Song getSong(String title, String artist, String album) {
+        SongEntityId id = SongEntityId.builder()
+                .title(title)
+                .artist(artist)
+                .album(album)
+                .build();
         SongEntity songEntity = songRepository.findById(id).orElseThrow(() -> new SongNotFoundException(id));
         return songMapper.mapSongEntityToSong(songEntity);
     }

@@ -19,7 +19,6 @@ public class PlaylistMapperTest {
         Playlist playlist = TestDataCreator.createTestPlaylist();
         PlaylistEntity entity = playlistMapper.mapPlaylistToPlaylistEntity(playlist);
 
-        assertEquals(TestDataCreator.TEST_PLAYLIST_ID, entity.getId());
         assertEquals(TestDataCreator.TEST_PLAYLIST_TITLE, entity.getTitle());
         assertEquals(TestDataCreator.TEST_OWNER, entity.getOwner());
         assertEquals(TestDataCreator.TEST_DESCRIPTION, entity.getDescription());
@@ -32,7 +31,6 @@ public class PlaylistMapperTest {
         PlaylistEntity entity = TestDataCreator.createTestPlaylistEntity();
         Playlist playlist = playlistMapper.mapPlaylistEntityToPlaylist(entity);
 
-        assertEquals(TestDataCreator.TEST_PLAYLIST_ID, playlist.getId());
         assertEquals(TestDataCreator.TEST_PLAYLIST_TITLE, playlist.getTitle());
         assertEquals(TestDataCreator.TEST_OWNER, playlist.getOwner());
         assertEquals(TestDataCreator.TEST_DESCRIPTION, playlist.getDescription());

@@ -28,9 +28,9 @@ public class PlaylistController {
         return playlistService.getAllPlaylists();
     }
 
-    @GetMapping("/{id}")
-    public Playlist getPlaylist(@PathVariable Long id) {
-        return playlistService.getPlaylist(id);
+    @GetMapping("/owner/{owner}/title/{title}")
+    public Playlist getPlaylist(@PathVariable String owner, @PathVariable String title) {
+        return playlistService.getPlaylist(owner, title);
     }
 
     @PostMapping
@@ -38,12 +38,12 @@ public class PlaylistController {
         return playlistService.savePlaylist(playlist);
     }
 
-    @PutMapping("/{id}")
-    public Playlist updatePlaylist(@PathVariable Long id, @RequestBody Playlist playlist) {
-        Playlist original = playlistService.getPlaylist(id);
+    @PutMapping("/owner/{owner}/title/{title}")
+    public Playlist updatePlaylist(@PathVariable String owner, @PathVariable String title, @RequestBody Playlist playlist) {
+        Playlist original = playlistService.getPlaylist(owner, title);
 
         if (original == null) {
-            throw new PlaylistNotFoundException(id);
+            throw new PlaylistNotFoundException(owner, title);
         }
 
         original.setTitle(playlist.getTitle());

@@ -30,7 +30,6 @@ public class PlaylistEntryMapperTest {
         assertEquals(TestDataCreator.TEST_PLAYLIST_INDEX, entity.getPlaylistIndex());
 
         SongEntity song  = entity.getSong();
-        assertEquals(TestDataCreator.TEST_SONG_ID, song.getId());
         assertEquals(TestDataCreator.TEST_ALBUM, song.getAlbum());
         assertEquals(TestDataCreator.TEST_ARTIST, song.getArtist());
         assertEquals(TestDataCreator.TEST_SONG_TITLE, song.getTitle());
@@ -40,7 +39,6 @@ public class PlaylistEntryMapperTest {
         assertEquals(TestDataCreator.TEST_REMOVED, song.isRemoved());
 
         PlaylistEntity playlist = entity.getPlaylist();
-        assertEquals(TestDataCreator.TEST_PLAYLIST_ID, playlist.getId());
         assertEquals(TestDataCreator.TEST_PLAYLIST_TITLE, playlist.getTitle());
         assertEquals(TestDataCreator.TEST_OWNER, playlist.getOwner());
         assertEquals(TestDataCreator.TEST_DESCRIPTION, playlist.getDescription());
@@ -56,7 +54,6 @@ public class PlaylistEntryMapperTest {
         assertEquals(TestDataCreator.TEST_PLAYLIST_INDEX, playlistEntry.getPlaylistIndex());
 
         Song song = playlistEntry.getSong();
-        assertEquals(TestDataCreator.TEST_SONG_ID, song.getId());
         assertEquals(TestDataCreator.TEST_ALBUM, song.getAlbum());
         assertEquals(TestDataCreator.TEST_ARTIST, song.getArtist());
         assertEquals(TestDataCreator.TEST_SONG_TITLE, song.getTitle());
@@ -66,7 +63,6 @@ public class PlaylistEntryMapperTest {
         assertEquals(TestDataCreator.TEST_REMOVED, song.isRemoved());
 
         Playlist playlist = playlistEntry.getPlaylist();
-        assertEquals(TestDataCreator.TEST_PLAYLIST_ID, playlist.getId());
         assertEquals(TestDataCreator.TEST_PLAYLIST_TITLE, playlist.getTitle());
         assertEquals(TestDataCreator.TEST_OWNER, playlist.getOwner());
         assertEquals(TestDataCreator.TEST_DESCRIPTION, playlist.getDescription());
