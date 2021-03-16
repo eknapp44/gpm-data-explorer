@@ -62,8 +62,9 @@ public class PlaylistEntryDataProcessor extends DataCsvProcessor<PlaylistEntry> 
         }
 
         song = decodeData(song);
-        // TODO check for duplicates.
-        song = songService.saveSong(song);
+
+        Song existingSong = songService.getSongByTitleAndArtistAndAlbum(song.getTitle(), song.getArtist(), song.getAlbum());
+        song = existingSong == null ? songService.createSong(song) : existingSong;
 
         playlistEntry.setSong(song);
 

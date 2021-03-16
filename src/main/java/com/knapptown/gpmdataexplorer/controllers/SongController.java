@@ -1,6 +1,5 @@
 package com.knapptown.gpmdataexplorer.controllers;
 
-import com.knapptown.gpmdataexplorer.exceptions.SongNotFoundException;
 import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.services.SongService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,25 +34,20 @@ public class SongController {
 
     @PostMapping
     public Song createSong(@RequestBody Song song) {
-        return songService.saveSong(song);
+        return songService.createSong(song);
     }
 
     @PutMapping("/{id}")
     public Song updateSong(@PathVariable Long id, @RequestBody Song song) {
         Song original = songService.getSong(id);
 
-        if (original == null) {
-            throw new SongNotFoundException(id);
-        }
-
-        original.setTitle(song.getTitle());
-        original.setAlbum(song.getAlbum());
-        original.setArtist(song.getArtist());
+        // TODO revisit ability to update title, artist, and album.
         original.setDurationMs(song.getDurationMs());
         original.setPlayCount(song.getPlayCount());
         original.setRating(song.getRating());
         original.setRemoved(song.isRemoved());
-        return songService.saveSong(original);
+
+        return songService.updateSong(original);
     }
 
 }

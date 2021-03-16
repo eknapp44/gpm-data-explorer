@@ -1,6 +1,5 @@
 package com.knapptown.gpmdataexplorer.controllers;
 
-import com.knapptown.gpmdataexplorer.exceptions.PlaylistNotFoundException;
 import com.knapptown.gpmdataexplorer.models.Playlist;
 import com.knapptown.gpmdataexplorer.services.PlaylistService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,23 +34,19 @@ public class PlaylistController {
 
     @PostMapping
     public Playlist createPlaylist(@RequestBody Playlist playlist) {
-        return playlistService.savePlaylist(playlist);
+        return playlistService.createPlaylist(playlist);
     }
 
     @PutMapping("/{id}")
     public Playlist updatePlaylist(@PathVariable Long id, @RequestBody Playlist playlist) {
         Playlist original = playlistService.getPlaylist(id);
 
-        if (original == null) {
-            throw new PlaylistNotFoundException(id);
-        }
-
-        original.setTitle(playlist.getTitle());
+        // TODO revisit ability to edit title and owner attributes.
         original.setShared(playlist.isShared());
         original.setDeleted(playlist.isDeleted());
         original.setDescription(playlist.getDescription());
 
-        return playlistService.savePlaylist(original);
+        return playlistService.updatePlaylist(original);
     }
 
 }
