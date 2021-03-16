@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.knapptown.gpmdataexplorer.entities.PlaylistEntity;
+import com.knapptown.gpmdataexplorer.exceptions.PlaylistExistsException;
 import com.knapptown.gpmdataexplorer.exceptions.PlaylistNotFoundException;
 import com.knapptown.gpmdataexplorer.mappers.PlaylistMapper;
 import com.knapptown.gpmdataexplorer.models.Playlist;
@@ -37,7 +38,25 @@ public class PlaylistService {
     }
 
     @Transactional
-    public Playlist savePlaylist(Playlist playlist) {
+    public Playlist getPlaylistForTitleAndOwner(String title, String owner) {
+        PlaylistEntity playlistEntity = playlistRepository.findByTitleAndOwner(title, owner);
+        return playlistMapper.mapPlaylistEntityToPlaylist(playlistEntity);
+    }
+
+    @Transactional
+    public Playlist createPlaylist(Playlist playlist) {
+        if (playlistRepository.existsByTitleAndOwner(playlist.getTitle(), playlist.getOwner())) {
+            throw new PlaylistExistsException(playlist.getTitle(), playlist.getOwner());
+        }
+        return savePlaylist(playlist);
+    }
+
+    @Transactional
+    public Playlist updatePlaylist(Playlist playlist) {
+        return savePlaylist(playlist);
+    }
+
+    private Playlist savePlaylist(Playlist playlist) {
         PlaylistEntity playlistEntity = playlistMapper.mapPlaylistToPlaylistEntity(playlist);
         return playlistMapper.mapPlaylistEntityToPlaylist(playlistRepository.save(playlistEntity));
     }
