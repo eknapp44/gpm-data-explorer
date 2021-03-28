@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
@@ -30,12 +32,29 @@ public class SongEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private @Size(min = 1, max = 150) String title;
-    private @Size(max = 150) String album;
-    private @Size(max = 200) String artist;
-    private @PositiveOrZero int durationMs;
-    private @Max(value = 5) Integer rating;
-    private @PositiveOrZero int playCount;
+
+    @NotBlank(message = "Title cannot be empty.")
+    @Size(max = 150)
+    private String title;
+
+    @NotBlank(message = "Album cannot be blank.")
+    @Size(max = 150)
+    private String album;
+
+    @NotBlank(message = "Artist cannot be empty.")
+    @Size(max = 200)
+    private String artist;
+
+    @PositiveOrZero
+    private Integer durationMs;
+
+    @Min(0)
+    @Max(value = 5)
+    private  Integer rating;
+
+    @PositiveOrZero
+    private Integer playCount;
+
     private boolean removed;
 
     @OneToMany(mappedBy = "song")

@@ -1,0 +1,168 @@
+{
+	"info": {
+		"_postman_id": "c771206a-8d15-4863-8ea7-f2acdce4c2f4",
+		"name": "GPM-Data-Explorer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET playlist (all)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/playlists",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists"
+					]
+				},
+				"description": "Get all of the playlists."
+			},
+			"response": []
+		},
+		{
+			"name": "GET playlist (id)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/playlists/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists",
+						"1"
+					]
+				},
+				"description": "Get playlist by ID value."
+			},
+			"response": []
+		},
+		{
+			"name": "POST playlist",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Test song\",\r\n    \"owner\" : \"Test user\",\r\n    \"description\" : \"\",\r\n    \"shared\" : false,\r\n    \"deleted\" : false\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/playlists/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				},
+				"description": "Create a new playlist."
+			},
+			"response": []
+		},
+		{
+			"name": "GET song (all)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/songs/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"songs",
+						""
+					]
+				},
+				"description": "Retrieve all songs."
+			},
+			"response": []
+		},
+		{
+			"name": "GET song (id)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/songs/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"songs",
+						"2"
+					]
+				},
+				"description": "Get song by ID value."
+			},
+			"response": []
+		},
+		{
+			"name": "POST song",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"Test song\",\r\n    \"artist\" : \"Test artist\",\r\n    \"album\" : \"Test album\",\r\n    \"durationMs\" : 20020,\r\n    \"rating\" : 3,\r\n    \"playCount\" : 20,\r\n    \"removed\" : false\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/songs/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"songs",
+						""
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				},
+				"description": "Create a song."
+			},
+			"response": []
+		}
+	]
+}

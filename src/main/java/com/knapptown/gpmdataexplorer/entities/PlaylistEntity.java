@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
@@ -16,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 /**
  * A Playlist entity. This is a representation of a playlist object that contains
@@ -32,10 +34,20 @@ public class PlaylistEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private @Size(min = 1, max = 50) String title;
-    private @Size(min = 1, max = 25) String owner;
-    private @Size(max = 100) String description;
-    private boolean shared;
+
+    @NotBlank(message = "Playlist title cannot be empty.")
+    @Size(max = 50)
+    private String title;
+
+    @NotBlank(message = "User cannot be empty/")
+    @Size(max = 25)
+    private String owner;
+
+    @Size(max = 100)
+    private String description;
+
+    private boolean shared ;
+
     private boolean deleted;
 
     @OneToMany(mappedBy = "playlist")

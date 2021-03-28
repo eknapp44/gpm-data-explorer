@@ -63,12 +63,21 @@ public class PlaylistEntryDataProcessor extends DataCsvProcessor<PlaylistEntry> 
 
         song = decodeData(song);
 
+        // TODO figure out a better way to handle empty albums and artists.
+        if (song.getAlbum() == null || song.getAlbum().isBlank()) {
+            song.setAlbum("Unknown - " + song.getArtist());
+        }
+        if (song.getArtist() == null || song.getArtist().isBlank()) {
+            song.setArtist("Unknown - " + song.getTitle());
+        }
+
         Song existingSong = songService.getSongByTitleAndArtistAndAlbum(song.getTitle(), song.getArtist(), song.getAlbum());
         song = existingSong == null ? songService.createSong(song) : existingSong;
 
         playlistEntry.setSong(song);
 
-        logger.info("Processed playlist entry metadata file: " + song.getTitle() + " by: " + song.getArtist());
+        logger.info("Processed playlist entry metadata file: " + song.getTitle() + " by: " + song.getArtist()
+                        + " on album: " + song.getAlbum());
         return playlistEntry;
     }
 
