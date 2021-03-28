@@ -3,6 +3,9 @@ package com.knapptown.gpmdataexplorer.services;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 import com.knapptown.gpmdataexplorer.entities.SongEntity;
 import com.knapptown.gpmdataexplorer.exceptions.SongExistsException;
@@ -12,8 +15,10 @@ import com.knapptown.gpmdataexplorer.models.Song;
 import com.knapptown.gpmdataexplorer.repositories.SongRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 public class SongService {
 
     private final SongRepository songRepository;
@@ -31,20 +36,20 @@ public class SongService {
     }
 
     @Transactional
-    public Song getSong(Long id) {
+    public Song getSong(@Positive Long id) {
         SongEntity songEntity = songRepository.findById(id)
                 .orElseThrow(() -> new SongNotFoundException(id));
         return songMapper.mapSongEntityToSong(songEntity);
     }
 
     @Transactional
-    public Song getSongByTitleAndArtistAndAlbum(String title, String artist, String album) {
+    public Song getSongByTitleAndArtistAndAlbum(@NotBlank String title, @NotBlank String artist, @NotBlank String album) {
         SongEntity songEntity = songRepository.findByTitleAndAlbumAndArtist(title, album, artist);
         return songMapper.mapSongEntityToSong(songEntity);
     }
 
     @Transactional
-    public Song createSong(Song song) {
+    public Song createSong(@Valid Song song) {
         if (songRepository.existsByTitleAndAlbumAndArtist(song.getTitle(), song.getAlbum(), song.getArtist())) {
             throw new SongExistsException(song.getTitle(), song.getArtist(), song.getAlbum());
         }
@@ -52,11 +57,11 @@ public class SongService {
     }
 
     @Transactional
-    public Song updateSong(Song song) {
+    public Song updateSong(@Valid Song song) {
         return saveSong(song);
     }
 
-    private Song saveSong(Song song) {
+    private Song saveSong(@Valid Song song) {
         SongEntity songEntity = songMapper.mapSongToSongEntity(song);
         return songMapper.mapSongEntityToSong(songRepository.save(songEntity));
     }

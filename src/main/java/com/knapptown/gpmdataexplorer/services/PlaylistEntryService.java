@@ -7,6 +7,7 @@ import com.knapptown.gpmdataexplorer.repositories.PlaylistEntryRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -27,13 +28,13 @@ public class PlaylistEntryService {
     }
 
     @Transactional
-    public PlaylistEntry savePlaylistEntry(PlaylistEntry playlistEntry) {
+    public PlaylistEntry savePlaylistEntry(@Valid  PlaylistEntry playlistEntry) {
         PlaylistEntryEntity playlistEntryEntity = playlistEntryMapper.mapPlaylistEntryToPlaylistEntryEntity(playlistEntry);
         return playlistEntryMapper.mapPlaylistEntryEntityToPlaylistEntry(playlistEntryRepository.save(playlistEntryEntity));
     }
 
     @Transactional
-    public List<PlaylistEntry> savePlaylistEntries(List<PlaylistEntry> playlistEntries) {
+    public List<PlaylistEntry> savePlaylistEntries(@Valid List<PlaylistEntry> playlistEntries) {
         List<PlaylistEntryEntity> entities = playlistEntryMapper.mapPlaylistEntriesToPlaylistEntryEntities(playlistEntries);
         return playlistEntryMapper.mapPlaylistEntryEntitiesToPlaylistEntries(playlistEntryRepository.saveAll(entities));
     }

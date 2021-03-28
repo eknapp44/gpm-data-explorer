@@ -1,5 +1,6 @@
 package com.knapptown.gpmdataexplorer.components;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.knapptown.gpmdataexplorer.mappers.PlaylistEntryMapper;
@@ -22,16 +23,14 @@ public class DataCsvReader {
     private final PlaylistEntryMapper playlistEntryMapper;
 
     /**
-     * Create a Data CSV Reader using schema, mapper, and Playlist Entry Mapper instances.
-     * @param csvMapper A CSV Mapper instance.
-     * @param csvSchema A CSV Schema instance.
+     * Create a Data CSV Reader using a Playlist Entry Mapper instance.
      * @param playlistEntryMapper A Playlist Entry mapper instance.
      */
-    public DataCsvReader(CsvMapper csvMapper,
-                         CsvSchema csvSchema,
-                         PlaylistEntryMapper playlistEntryMapper) {
-        this.csvMapper = csvMapper;
-        this.csvSchema = csvSchema;
+    public DataCsvReader(PlaylistEntryMapper playlistEntryMapper) {
+        // TODO look into how to have CSV Mapper and Schema in the global bean factory and not affect output.
+        this.csvMapper = (CsvMapper) new CsvMapper()
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+        this.csvSchema =  CsvSchema.emptySchema().withHeader();
         this.playlistEntryMapper = playlistEntryMapper;
     }
 

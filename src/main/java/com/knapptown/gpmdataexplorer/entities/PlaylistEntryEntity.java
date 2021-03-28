@@ -33,6 +33,7 @@ public class PlaylistEntryEntity implements Serializable {
     private PlaylistEntity playlist;
 
     @Id
-    private @PositiveOrZero int playlistIndex;
+    @PositiveOrZero
+    private Integer playlistIndex;
 
 }

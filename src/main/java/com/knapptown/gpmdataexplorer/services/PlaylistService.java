@@ -3,6 +3,9 @@ package com.knapptown.gpmdataexplorer.services;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 import com.knapptown.gpmdataexplorer.entities.PlaylistEntity;
 import com.knapptown.gpmdataexplorer.exceptions.PlaylistExistsException;
@@ -12,8 +15,10 @@ import com.knapptown.gpmdataexplorer.models.Playlist;
 import com.knapptown.gpmdataexplorer.repositories.PlaylistRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Validated
 public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
@@ -31,20 +36,20 @@ public class PlaylistService {
     }
 
     @Transactional
-    public Playlist getPlaylist(Long id) {
+    public Playlist getPlaylist(@Positive Long id) {
         PlaylistEntity playlistEntity = playlistRepository.findById(id)
                 .orElseThrow(() -> new PlaylistNotFoundException(id));
         return playlistMapper.mapPlaylistEntityToPlaylist(playlistEntity);
     }
 
     @Transactional
-    public Playlist getPlaylistForTitleAndOwner(String title, String owner) {
+    public Playlist getPlaylistForTitleAndOwner(@NotBlank String title, @NotBlank String owner) {
         PlaylistEntity playlistEntity = playlistRepository.findByTitleAndOwner(title, owner);
         return playlistMapper.mapPlaylistEntityToPlaylist(playlistEntity);
     }
 
     @Transactional
-    public Playlist createPlaylist(Playlist playlist) {
+    public Playlist createPlaylist(@Valid Playlist playlist) {
         if (playlistRepository.existsByTitleAndOwner(playlist.getTitle(), playlist.getOwner())) {
             throw new PlaylistExistsException(playlist.getTitle(), playlist.getOwner());
         }
@@ -52,11 +57,11 @@ public class PlaylistService {
     }
 
     @Transactional
-    public Playlist updatePlaylist(Playlist playlist) {
+    public Playlist updatePlaylist(@Valid Playlist playlist) {
         return savePlaylist(playlist);
     }
 
-    private Playlist savePlaylist(Playlist playlist) {
+    private Playlist savePlaylist(@Valid Playlist playlist) {
         PlaylistEntity playlistEntity = playlistMapper.mapPlaylistToPlaylistEntity(playlist);
         return playlistMapper.mapPlaylistEntityToPlaylist(playlistRepository.save(playlistEntity));
     }
