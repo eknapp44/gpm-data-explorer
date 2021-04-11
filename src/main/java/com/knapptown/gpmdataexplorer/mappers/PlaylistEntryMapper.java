@@ -10,15 +10,7 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {PlaylistMapper.class, SongMapper.class})
-public interface PlaylistEntryMapper {
-
-    PlaylistEntryEntity mapPlaylistEntryToPlaylistEntryEntity(PlaylistEntry playlistEntry);
-
-    List<PlaylistEntryEntity> mapPlaylistEntriesToPlaylistEntryEntities(List<PlaylistEntry> playlistEntries);
-
-    PlaylistEntry mapPlaylistEntryEntityToPlaylistEntry(PlaylistEntryEntity playlistEntryEntity);
-
-    List<PlaylistEntry> mapPlaylistEntryEntitiesToPlaylistEntries(List<PlaylistEntryEntity> playlistEntryEntities);
+public interface PlaylistEntryMapper extends BasicMapper<PlaylistEntry, PlaylistEntryEntity> {
 
     @Mapping(target = "playlist", ignore = true)
     @Mapping(target = "song", expression = "java(mapPlaylistEntryCsvObjectToSong(playlistEntryCsvObject))")

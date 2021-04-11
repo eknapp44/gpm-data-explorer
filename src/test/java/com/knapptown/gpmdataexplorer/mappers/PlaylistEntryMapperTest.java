@@ -25,7 +25,7 @@ public class PlaylistEntryMapperTest {
     @Test
     public void testMapPlaylistEntryToPlaylistEntryEntity() {
         PlaylistEntry playlistEntry = TestDataCreator.createTestPlaylistEntry();
-        PlaylistEntryEntity entity = songMapper.mapPlaylistEntryToPlaylistEntryEntity(playlistEntry);
+        PlaylistEntryEntity entity = songMapper.mapModelToEntity(playlistEntry);
 
         assertEquals(TestDataCreator.TEST_PLAYLIST_INDEX, entity.getPlaylistIndex());
 
@@ -51,7 +51,7 @@ public class PlaylistEntryMapperTest {
     @Test
     public void testMapPlaylistEntryEntityToPlaylistEntry() {
         PlaylistEntryEntity entity = TestDataCreator.createTestPlaylistEntryEntity();
-        PlaylistEntry playlistEntry = songMapper.mapPlaylistEntryEntityToPlaylistEntry(entity);
+        PlaylistEntry playlistEntry = songMapper.mapEntityToModel(entity);
 
         assertEquals(TestDataCreator.TEST_PLAYLIST_INDEX, playlistEntry.getPlaylistIndex());
 
@@ -77,7 +77,7 @@ public class PlaylistEntryMapperTest {
     @Test
     public void testMapPlaylistEntriesToPlaylistEntryEntities() {
         List<PlaylistEntry> playlistEntries = TestDataCreator.createTestPlaylistEntries();
-        List<PlaylistEntryEntity> entities = songMapper.mapPlaylistEntriesToPlaylistEntryEntities(playlistEntries);
+        List<PlaylistEntryEntity> entities = songMapper.mapModelsToEntities(playlistEntries);
 
         assertEquals(2, entities.size());
     }
@@ -85,7 +85,7 @@ public class PlaylistEntryMapperTest {
     @Test
     public void testMapPlaylistEntryEntitiesToPlaylistEntries() {
         List<PlaylistEntryEntity> entities = TestDataCreator.createTestPlaylistEntryEntities();
-        List<PlaylistEntry> playlistEntries = songMapper.mapPlaylistEntryEntitiesToPlaylistEntries(entities);
+        List<PlaylistEntry> playlistEntries = songMapper.mapEntitiesToModels(entities);
 
         assertEquals(2, playlistEntries.size());
     }

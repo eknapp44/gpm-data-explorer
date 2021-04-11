@@ -85,6 +85,100 @@
 			"response": []
 		},
 		{
+			"name": "GET playlist/{id}/songs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/playlists/1/songs",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists",
+						"1",
+						"songs"
+					]
+				},
+				"description": "Get songs in a playlist."
+			},
+			"response": []
+		},
+		{
+			"name": "GET playlist/{id}/songs/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/playlists/1/songs/7",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists",
+						"1",
+						"songs",
+						"7"
+					]
+				},
+				"description": "Get song for a given id in a given playlist for a given id."
+			},
+			"response": []
+		},
+		{
+			"name": "GET playlist/{id}/songs/{id}/index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/playlists/1/songs/7/index",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists",
+						"1",
+						"songs",
+						"7",
+						"index"
+					]
+				},
+				"description": "Get the index for a song by a given id in a playlist with a given id."
+			},
+			"response": []
+		},
+		{
+			"name": "GET playlist/{id}/songs/{id}/index/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/playlists/1/songs/7/index/0",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"playlists",
+						"1",
+						"songs",
+						"7",
+						"index",
+						"0"
+					]
+				},
+				"description": "Get a playlist entry for a given playlist id, song id, and playlist index."
+			},
+			"response": []
+		},
+		{
 			"name": "GET song (all)",
 			"request": {
 				"method": "GET",

@@ -61,7 +61,7 @@ public class PlaylistDirectoryProcessor extends DirectoryProcessor<Playlist> {
             for (PlaylistEntry playlistEntry : playlistEntries) {
                 playlistEntry.setPlaylist(playlist);
             }
-            playlistEntryService.savePlaylistEntries(playlistEntries);
+            playlistEntryService.create(playlistEntries);
         }
 
         logger.info("Processed playlist directory: " + path);

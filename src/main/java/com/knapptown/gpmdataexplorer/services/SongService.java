@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Validated
-public class SongService {
+public class SongService implements CrudService<Song> {
 
     private final SongRepository songRepository;
     private final SongMapper songMapper;
@@ -30,40 +30,66 @@ public class SongService {
         this.songMapper = songMapper;
     }
 
+    @Override
     @Transactional
-    public List<Song> getAllSongs() {
-        return songMapper.mapSongEntitiesToSongs(songRepository.findAll());
+    public List<Song> getAll() {
+        return songMapper.mapEntitiesToModels(songRepository.findAll());
     }
 
+    @Override
     @Transactional
-    public Song getSong(@Positive Long id) {
+    public Song getById(@Positive Long id) {
         SongEntity songEntity = songRepository.findById(id)
                 .orElseThrow(() -> new SongNotFoundException(id));
-        return songMapper.mapSongEntityToSong(songEntity);
+        return songMapper.mapEntityToModel(songEntity);
     }
 
     @Transactional
-    public Song getSongByTitleAndArtistAndAlbum(@NotBlank String title, @NotBlank String artist, @NotBlank String album) {
+    public Song getSongByTitleAndArtistAndAlbum(@NotBlank String title,
+                                                @NotBlank String artist,
+                                                @NotBlank String album) {
         SongEntity songEntity = songRepository.findByTitleAndAlbumAndArtist(title, album, artist);
-        return songMapper.mapSongEntityToSong(songEntity);
+        return songMapper.mapEntityToModel(songEntity);
     }
 
     @Transactional
-    public Song createSong(@Valid Song song) {
-        if (songRepository.existsByTitleAndAlbumAndArtist(song.getTitle(), song.getAlbum(), song.getArtist())) {
+    public boolean existsForTitleAndArtistAndAlbum(@NotBlank String title,
+                                                   @NotBlank String artist,
+                                                   @NotBlank String album) {
+        return songRepository.existsByTitleAndAlbumAndArtist(title, artist, album);
+    }
+
+    @Override
+    @Transactional
+    public Song create(@Valid Song song) {
+        if (existsForTitleAndArtistAndAlbum(song.getTitle(), song.getAlbum(), song.getArtist())) {
             throw new SongExistsException(song.getTitle(), song.getArtist(), song.getAlbum());
         }
         return saveSong(song);
     }
 
+    @Override
     @Transactional
-    public Song updateSong(@Valid Song song) {
+    public Song update(@Positive Long id, @Valid Song song) {
+        if (existsForTitleAndArtistAndAlbum(song.getTitle(), song.getAlbum(), song.getArtist())) {
+            throw new SongExistsException(song.getTitle(), song.getArtist(), song.getAlbum());
+        }
+
+        Song original = getById(id);
+        song.setId(original.getId());
+
         return saveSong(song);
     }
 
+    @Override
+    @Transactional
+    public void delete(@Positive Long id) {
+        songRepository.deleteById(id);
+    }
+
     private Song saveSong(@Valid Song song) {
-        SongEntity songEntity = songMapper.mapSongToSongEntity(song);
-        return songMapper.mapSongEntityToSong(songRepository.save(songEntity));
+        SongEntity songEntity = songMapper.mapModelToEntity(song);
+        return songMapper.mapEntityToModel(songRepository.save(songEntity));
     }
     
 }

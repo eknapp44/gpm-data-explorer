@@ -17,7 +17,7 @@ public class SongMapperTest {
     @Test
     public void testMapSongToSongEntity() {
         Song song = TestDataCreator.createTestSong();
-        SongEntity entity = songMapper.mapSongToSongEntity(song);
+        SongEntity entity = songMapper.mapModelToEntity(song);
 
         assertEquals(TestDataCreator.TEST_SONG_ID, entity.getId());
         assertEquals(TestDataCreator.TEST_ALBUM, entity.getAlbum());
@@ -32,7 +32,7 @@ public class SongMapperTest {
     @Test
     public void testMapSongEntitiesToSong() {
         SongEntity entity = TestDataCreator.createTestSongEntity();
-        Song song = songMapper.mapSongEntityToSong(entity);
+        Song song = songMapper.mapEntityToModel(entity);
 
         assertEquals(TestDataCreator.TEST_SONG_ID, song.getId());
         assertEquals(TestDataCreator.TEST_ALBUM, song.getAlbum());
@@ -47,7 +47,7 @@ public class SongMapperTest {
     @Test
     public void testMapSongsToSongEntities() {
         List<Song> songs = TestDataCreator.createTestSongList();
-        List<SongEntity> entities = songMapper.mapSongsToSongEntities(songs);
+        List<SongEntity> entities = songMapper.mapModelsToEntities(songs);
 
         assertEquals(2, entities.size());
     }
@@ -55,7 +55,7 @@ public class SongMapperTest {
     @Test
     public void testMapSongEntitiesToSongs() {
         List<SongEntity> entities = TestDataCreator.createTestSongEntityList();
-        List<Song> songs = songMapper.mapSongEntitiesToSongs(entities);
+        List<Song> songs = songMapper.mapEntitiesToModels(entities);
 
         assertEquals(2, songs.size());
     }
