@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.nio.file.Paths;
+import java.util.Optional;
 
 /**
  * Main configuration for processing data. This configuration sets up components
@@ -19,8 +20,8 @@ public class DataProcessingConfiguration {
     /**
      * The configuration property specifying the base data directory to process.
      */
-    @Value("${gpm.data.explorer.data.directory}")
-    private String dataDirectory;
+    @Value("${gpm.data.explorer.data.directory:#{null}}")
+    private Optional<String> dataDirectory;
 
     /**
      * A Command Line Runner instance that triggers the initial processing of a configured
@@ -30,7 +31,8 @@ public class DataProcessingConfiguration {
      */
     @Bean
     public CommandLineRunner loadDatabase(DataDirectoryProcessor processor) {
-        return args -> processor.process(Paths.get(dataDirectory));
+        return dataDirectory.<CommandLineRunner>map(directory ->
+                args -> processor.process(Paths.get(directory))).orElse(null);
     }
     
 }

@@ -72,7 +72,7 @@ public class PlaylistEntryDataProcessor extends DataCsvProcessor<PlaylistEntry> 
         }
 
         Song existingSong = songService.getSongByTitleAndArtistAndAlbum(song.getTitle(), song.getArtist(), song.getAlbum());
-        song = existingSong == null ? songService.createSong(song) : existingSong;
+        song = existingSong == null ? songService.create(song) : existingSong;
 
         playlistEntry.setSong(song);
 

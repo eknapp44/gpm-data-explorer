@@ -2,7 +2,7 @@ package com.knapptown.gpmdataexplorer.controllers;
 
 import com.knapptown.gpmdataexplorer.models.Playlist;
 import com.knapptown.gpmdataexplorer.services.PlaylistService;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,14 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
-@Validated
 @RestController
 @RequestMapping("api/playlists")
-public class PlaylistController {
+public class PlaylistController implements CrudController<Playlist> {
 
     private final PlaylistService playlistService;
 
@@ -27,31 +24,34 @@ public class PlaylistController {
         this.playlistService = playlistService;
     }
 
+    @Override
     @GetMapping
-    public @ResponseBody List<Playlist> getAllPlaylists() {
-        return playlistService.getAllPlaylists();
+    public @ResponseBody List<Playlist> getAll() {
+        return playlistService.getAll();
     }
 
+    @Override
     @GetMapping("/{id}")
-    public @ResponseBody Playlist getPlaylist(@PathVariable @Positive Long id) {
-        return playlistService.getPlaylist(id);
+    public @ResponseBody Playlist getById(@PathVariable Long id) {
+        return playlistService.getById(id);
     }
 
+    @Override
     @PostMapping
-    public @ResponseBody Playlist createPlaylist(@RequestBody @Valid Playlist playlist) {
-        return playlistService.createPlaylist(playlist);
+    public @ResponseBody Playlist create(@RequestBody Playlist playlist) {
+        return playlistService.create(playlist);
     }
 
+    @Override
     @PutMapping("/{id}")
-    public @ResponseBody Playlist updatePlaylist(@PathVariable @Positive Long id, @RequestBody @Valid Playlist playlist) {
-        Playlist original = playlistService.getPlaylist(id);
+    public @ResponseBody Playlist update(@PathVariable Long id, @RequestBody Playlist playlist) {
+        return playlistService.update(id, playlist);
+    }
 
-        // TODO revisit ability to edit title and owner attributes.
-        original.setShared(playlist.isShared());
-        original.setDeleted(playlist.isDeleted());
-        original.setDescription(playlist.getDescription());
-
-        return playlistService.updatePlaylist(original);
+    @Override
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        playlistService.delete(id);
     }
 
 }

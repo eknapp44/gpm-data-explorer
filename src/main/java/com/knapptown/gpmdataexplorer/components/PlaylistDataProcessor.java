@@ -56,8 +56,8 @@ public class PlaylistDataProcessor extends DataCsvProcessor<Playlist> {
 
         playlist = decodeData(playlist);
 
-        Playlist existingPlaylist = playlistService.getPlaylistForTitleAndOwner(playlist.getTitle(), playlist.getOwner());
-        playlist = existingPlaylist == null ? playlistService.createPlaylist(playlist) : existingPlaylist;
+        Playlist existingPlaylist = playlistService.getByTitleAndOwner(playlist.getTitle(), playlist.getOwner());
+        playlist = existingPlaylist == null ? playlistService.create(playlist) : existingPlaylist;
 
         logger.info("Processed metadata file for playlist: " + playlist.getTitle());
         return  playlist;

@@ -5,18 +5,11 @@ import com.knapptown.gpmdataexplorer.models.Song;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring")
-public interface SongMapper {
+public interface SongMapper extends BasicMapper<Song, SongEntity> {
 
-    List<SongEntity> mapSongsToSongEntities(List<Song> songs);
-
+    @Override
     @Mapping(target = "playlistEntries", ignore = true)
-    SongEntity mapSongToSongEntity(Song song);
-
-    List<Song> mapSongEntitiesToSongs(List<SongEntity> songEntities);
-
-    Song mapSongEntityToSong(SongEntity songEntity) ;
+    SongEntity mapModelToEntity(Song song);
 
 }
